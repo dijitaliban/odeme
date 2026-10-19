@@ -17,7 +17,7 @@
         // 🛠️ USTA SADECE AŞAĞIDAKİ 4 SATIRDA TIRNAK İÇİNİ DEĞİŞTİR 🛠️
         // ==========================================================
         
-        const DUKKAN_ADI  = "Altın Çekiç";
+        const DUKKAN_ADI  = "Altın Çekiç Pendik";
         const BANKA_ADI   = "ENPARA";
         const ALICI_ISIM  = "EFKAN DURDU";
         const IBAN_NO     = "TR12 0015 7000 0000 0117 0539 73";
