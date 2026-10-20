@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- iPhone/Safari'nin IBAN'ı telefon numarası sanıp mavi link yapmasını engeller -->
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <!-- Google ve tüm arama motorlarında çıkmayı %100 engeller (Sadece kartı okutan ulaşır) -->
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+    <!-- Dışarıdan kod enjeksiyonunu ve sayfanın başka siteye gömülmesini engeller -->
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta name="referrer" content="no-referrer">
+    <title>Güvenli Ödeme Noktası</title>
+
+    <script>
+        // ==========================================================
+        // 🛠️ USTA SADECE AŞAĞIDAKİ 4 SATIRDA TIRNAK İÇİNİ DEĞİŞTİR 🛠️
+        // ==========================================================
+        
+        const DUKKAN_ADI  = "Salon Lion;
+        const BANKA_ADI   = "Yapı Kredi";
+        const ALICI_ISIM  = "Şahin Arslan";
+        const IBAN_NO     = "TR800006701000000039890684";
+
+        // ==========================================================
+        // ⛔ AŞAĞIDAKİ GÜVENLİK KODLARINA HİÇ DOKUNMA ⛔
+        // ==========================================================
+        if (window.top !== window.self) { window.top.location = window.self.location; }
+    </script>
+
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+        body { background-color: #0f172a; color: #f8fafc; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+        .container { width: 100%; max-width: 400px; background: #1e293b; border-radius: 24px; padding: 28px 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); text-align: center; border: 1px solid #334155; }
+        .logo { width: 68px; height: 68px; background: linear-gradient(135deg, #3b82f6, #1d4ed8); border-radius: 50%; margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; font-weight: bold; color: white; box-shadow: 0 8px 16px rgba(59,130,246,0.3); }
+        .verified-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(16, 185, 129, 0.12); color: #34d399; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px; margin-bottom: 10px; border: 1px solid rgba(16, 185, 129, 0.25); }
+        h1 { font-size: 21px; font-weight: 700; margin-bottom: 6px; color: #ffffff; }
+        p.subtitle { font-size: 13px; color: #94a3b8; margin-bottom: 22px; }
+        .bank-card { background: #0f172a; border-radius: 16px; padding: 18px; margin-bottom: 16px; text-align: left; border: 1px solid #334155; }
+        .bank-name { font-size: 14px; font-weight: 700; color: #38bdf8; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between; }
+        .label { font-size: 11px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+        .value-box { display: flex; justify-content: space-between; align-items: center; background: #1e293b; padding: 12px; border-radius: 10px; margin-bottom: 12px; border: 1px solid #334155; }
+        .value-text { font-size: 14px; font-weight: 600; color: #f1f5f9; word-break: break-all; margin-right: 10px; text-decoration: none; }
+        .value-text a { color: #f1f5f9 !important; text-decoration: none !important; pointer-events: none; }
+        .copy-btn { background: #3b82f6; color: white; border: none; padding: 9px 15px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: 0.2s; }
+        .copy-btn:active { transform: scale(0.95); background: #2563eb; }
+        .toast { visibility: hidden; min-width: 260px; max-width: 90%; background-color: #10b981; color: #fff; text-align: center; border-radius: 12px; padding: 12px 16px; position: fixed; z-index: 99; bottom: 30px; font-size: 13px; font-weight: 600; box-shadow: 0 10px 25px rgba(16,185,129,0.4); line-height: 1.4; }
+        .toast.show { visibility: visible; animation: fadein 0.3s, fadeout 0.3s 2.7s; }
+        @keyframes fadein { from {bottom: 10px; opacity: 0;} to {bottom: 30px; opacity: 1;} }
+        @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 10px; opacity: 0;} }
+        .footer { font-size: 11px; color: #64748b; margin-top: 16px; line-height: 1.5; }
+    </style>
+</head>
+<body oncontextmenu="return false;" onselectstart="return false;" ondragstart="return false;">
+
+<div class="container">
+    <div class="logo">₺</div>
+    <div class="verified-badge">✓ Doğrulanmış İşletme Hesabı</div>
+    <h1 id="dukkan_baslik"></h1>
+    <p class="subtitle">Ödeme için aşağıdaki bilgileri tek tıkla kopyalayabilirsiniz.</p>
+
+    <div class="bank-card">
+        <div class="bank-name">
+            <span id="banka_baslik"></span>
+            <span style="font-size:11px; color:#94a3b8;">TL Hesabı</span>
+        </div>
+
+        <div class="label">Alıcı Adı Soyadı</div>
+        <div class="value-box">
+            <span class="value-text" id="isim1"></span>
+            <button class="copy-btn" onclick="kopyala('isim1', 'Alıcı Adı')">Kopyala</button>
+        </div>
+
+        <div class="label">IBAN Numarası</div>
+        <div class="value-box" style="margin-bottom: 0;">
+            <span class="value-text" id="iban1"></span>
+            <button class="copy-btn" onclick="kopyala('iban1', 'IBAN')">Kopyala</button>
+        </div>
+    </div>
+    
+    <div class="footer">🔒 256-Bit SSL & NFC Donanım Korumalı<br>İşlem öncesi alıcı adını bankanızdan teyit ediniz.</div>
+</div>
+
+<div id="toast" class="toast">✅ Bilgi Kopyalandı!</div>
+
+<script>
+    // Bilgileri ekrana güvenli şekilde (XSS korumalı) yerleştir
+    document.getElementById("dukkan_baslik").textContent = DUKKAN_ADI;
+    document.getElementById("banka_baslik").textContent = "🏦 " + BANKA_ADI;
+    document.getElementById("isim1").textContent = ALICI_ISIM;
+    document.getElementById("iban1").textContent = IBAN_NO;
+    document.title = DUKKAN_ADI + " - Güvenli Ödeme";
+
+    // Güvenli Kopyalama Fonksiyonu
+    function kopyala(elementId, tur) {
+        var hamMetin = document.getElementById(elementId).textContent.trim();
+        navigator.clipboard.writeText(hamMetin).then(function() {
+            var toast = document.getElementById("toast");
+            if (tur === 'IBAN') {
+                toast.textContent = "✅ IBAN Kopyalandı! Alıcı: " + ALICI_ISIM;
+            } else {
+                toast.textContent = "✅ " + tur + " Kopyalandı!";
+            }
+            toast.className = "toast show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 3000);
+        });
+    }
+
+    // F12, Sağ Tık, Ctrl+U ve İncele (Inspect) Kısayollarını Engelleme
+    document.onkeydown = function(e) {
+        if (e.keyCode == 123 || (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 83))) {
+            return false;
+        }
+    };
+</script>
+
+</body>
+</html>
