@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soner & Erva — Bizim Hikayemiz</title>
+    <title>Soner ❤️ Erva — Bizim Hikayemiz</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -34,8 +34,7 @@
                             800: '#9f1239',
                             900: '#881337',
                             950: '#4c0519',
-                        },
-                        cream: '#FDF8F5'
+                        }
                     }
                 }
             }
@@ -46,14 +45,13 @@
         body {
             background-color: #FDF8F5;
             background-image: 
-                radial-gradient(at 15% 15%, rgba(254, 205, 211, 0.45) 0px, transparent 50%),
-                radial-gradient(at 85% 80%, rgba(253, 164, 175, 0.35) 0px, transparent 50%),
-                radial-gradient(at 50% 50%, rgba(255, 228, 230, 0.3) 0px, transparent 60%);
+                radial-gradient(at 15% 15%, rgba(254, 205, 211, 0.5) 0px, transparent 50%),
+                radial-gradient(at 85% 80%, rgba(253, 164, 175, 0.4) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(255, 228, 230, 0.35) 0px, transparent 60%);
             background-attachment: fixed;
             overflow-x: hidden;
         }
 
-        /* Arka Plan Uçuşan Kalpler */
         .floating-heart {
             position: fixed;
             pointer-events: none;
@@ -67,266 +65,294 @@
                 transform: translateY(105vh) scale(0.6) rotate(0deg);
                 opacity: 0;
             }
-            15% {
-                opacity: 0.45;
-            }
-            85% {
-                opacity: 0.45;
-            }
+            15% { opacity: 0.45; }
+            85% { opacity: 0.45; }
             100% {
-                transform: translateY(-10vh) scale(1.1) rotate(25deg);
+                transform: translateY(-10vh) scale(1.15) rotate(25deg);
                 opacity: 0;
             }
         }
 
-        /* Cam Efekti (Glassmorphism) */
         .glass-card {
-            background: rgba(255, 255, 255, 0.78);
+            background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(254, 205, 211, 0.6);
-            box-shadow: 0 20px 40px -15px rgba(136, 19, 55, 0.07);
+            border: 1px solid rgba(254, 205, 211, 0.7);
+            box-shadow: 0 20px 40px -15px rgba(136, 19, 55, 0.08);
         }
 
-        /* Polaroid Çerçeve Efekti */
         .polaroid-frame {
             background: #ffffff;
-            padding: 1rem 1rem 2.25rem 1rem;
-            box-shadow: 0 25px 50px -12px rgba(136, 19, 55, 0.14), 0 0 1px 1px rgba(136, 19, 55, 0.04);
-            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        
-        .polaroid-frame:hover {
-            transform: translateY(-4px) rotate(0.5deg);
+            padding: 1rem 1rem 1.75rem 1rem;
+            box-shadow: 0 25px 50px -12px rgba(136, 19, 55, 0.15), 0 0 1px 1px rgba(136, 19, 55, 0.05);
+            transition: all 0.3s ease;
         }
 
-        /* Yumuşak Geçişler */
-        .fade-transition {
-            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+        .drag-over {
+            border: 3px dashed #e11d48 !important;
+            background-color: #fff1f2 !important;
+            transform: scale(1.01);
         }
 
-        /* Özel Kaydırma Çubuğu */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #fff1f2;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #fda4af;
-            border-radius: 9999px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #f43f5e;
-        }
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #fff1f2; }
+        ::-webkit-scrollbar-thumb { background: #fda4af; border-radius: 9999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #f43f5e; }
     </style>
 </head>
 <body class="font-sans text-rose-950 antialiased selection:bg-rose-200 selection:text-rose-900 min-h-screen flex flex-col justify-between relative">
 
-    <!-- Uçuşan Kalpler Konteyneri -->
+    <!-- Uçuşan Kalpler Arka Planı -->
     <div id="hearts-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
 
-    <!-- Üst Gezinme / Başlık Çubuğu -->
-    <header class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-2 flex flex-wrap items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
-            <div class="flex items-center gap-2.5 bg-white/85 backdrop-blur-md px-4 py-2 rounded-full border border-rose-200/80 shadow-sm">
-                <span class="relative flex h-2.5 w-2.5">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                    <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
-                </span>
-                <span class="font-serif font-semibold text-rose-900 tracking-wide text-sm sm:text-base">Soner & Erva</span>
-            </div>
-
-            <!-- Canlı Bulut Senkronizasyon Rozeti -->
-            <div id="cloud-status-badge" class="inline-flex items-center gap-1.5 bg-emerald-50/90 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
-                <span id="cloud-status-dot" class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                <span id="cloud-status-text">Buluta Bağlanıyor...</span>
-            </div>
+    <!-- ÜST BAR -->
+    <header class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 pt-5 pb-2 flex flex-wrap items-center justify-between gap-3">
+        <div class="flex items-center gap-2.5 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full border border-rose-200 shadow-sm">
+            <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
+            </span>
+            <span class="font-serif font-bold text-rose-900 tracking-wide text-sm sm:text-base">Soner ❤️ Erva</span>
         </div>
 
         <div class="flex items-center gap-2">
-            <button onclick="openGalleryModal()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white/85 hover:bg-rose-50 backdrop-blur-md px-3.5 py-2 rounded-full border border-rose-200/80 shadow-sm transition-all active:scale-95">
-                <i data-lucide="grid" class="w-4 h-4 text-rose-600"></i>
-                <span class="hidden sm:inline">Tüm Albüm</span>
-            </button>
-            <button onclick="openDateModal()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white/85 hover:bg-rose-50 backdrop-blur-md px-3.5 py-2 rounded-full border border-rose-200/80 shadow-sm transition-all active:scale-95">
-                <i data-lucide="calendar-heart" class="w-4 h-4 text-rose-600"></i>
-                <span>Tarihi Düzenle</span>
-            </button>
-            <button onclick="openHelpModal()" title="Nasıl Çalışır?" class="p-2 text-rose-700 bg-white/85 hover:bg-rose-50 backdrop-blur-md rounded-full border border-rose-200/80 shadow-sm transition-all active:scale-95">
-                <i data-lucide="sparkles" class="w-4 h-4 text-rose-600"></i>
+            <div id="sync-badge" class="inline-flex items-center gap-1.5 bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm">
+                <span id="sync-dot" class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span id="sync-text">Anında Kayıt Aktif</span>
+            </div>
+            <button type="button" onclick="toggleDateEditor()" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rose-800 bg-white hover:bg-rose-50 px-3.5 py-1.5 rounded-full border border-rose-200 shadow-sm transition-all active:scale-95">
+                <i data-lucide="calendar" class="w-4 h-4 text-rose-600"></i>
+                <span>Tarihi Değiştir</span>
             </button>
         </div>
     </header>
 
-    <!-- Ana İçerik -->
-    <main class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-12 sm:space-y-16">
+    <!-- ANA İÇERİK -->
+    <main class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 space-y-10 sm:space-y-12">
 
-        <!-- 1. BÖLÜM: KAHRAMAN BAŞLIK & CANLI İLİŞKİ SAYACI -->
-        <section class="text-center space-y-8">
-            <div class="space-y-3 max-w-2xl mx-auto">
-                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-100/80 border border-rose-200 text-rose-700 text-xs font-semibold tracking-wider uppercase">
-                    <i data-lucide="heart" class="w-3.5 h-3.5 fill-rose-500 text-rose-500"></i>
-                    <span>Sonsuzluğa Doğru</span>
+        <!-- 1. BÖLÜM: BAŞLIK & CANLI SAYAÇ -->
+        <section class="text-center space-y-6">
+            <div class="space-y-2 max-w-2xl mx-auto">
+                <div class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-100/90 border border-rose-200 text-rose-700 text-xs font-bold tracking-wider uppercase">
+                    <span>✨ Bizim Hikayemiz ✨</span>
                 </div>
-                <h1 class="font-serif text-4xl sm:text-6xl font-bold text-rose-950 tracking-tight leading-tight">
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold text-rose-950 tracking-tight">
                     Soner <span class="font-serif italic font-normal text-rose-500">&amp;</span> Erva
                 </h1>
-                <p id="start-date-display" class="text-sm sm:text-base text-rose-700/90 font-medium">
-                    Hikayemizin Başlangıcı: Yükleniyor...
+                <p id="start-date-label" class="text-sm sm:text-base text-rose-700 font-medium">
+                    Başlangıç: 14 Şubat 2025, 14:00
                 </p>
             </div>
 
-            <!-- Canlı Sayaç Kartı -->
-            <div class="glass-card rounded-3xl p-5 sm:p-8 max-w-4xl mx-auto">
-                <div class="flex items-center justify-between mb-5 px-1">
-                    <div class="flex items-center gap-2 text-rose-800 font-medium text-xs sm:text-sm">
-                        <i data-lucide="clock" class="w-4 h-4 text-rose-500"></i>
-                        <span>Seninle geçen her saniye çok değerli...</span>
+            <!-- Satır İçi (Inline) Tarih Değiştirme Kutusu -->
+            <div id="inline-date-editor" class="hidden max-w-xl mx-auto glass-card rounded-2xl p-4 border-2 border-rose-300 shadow-lg">
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="text-left w-full sm:w-auto">
+                        <label class="block text-xs font-bold uppercase text-rose-800 mb-1">Çıkmaya Başladığımız Tarih ve Saat:</label>
+                        <div class="flex items-center gap-2">
+                            <input type="date" id="date-input" class="rounded-xl border border-rose-300 px-3 py-2 text-sm text-rose-950 font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500">
+                            <input type="time" id="time-input" value="14:00" class="rounded-xl border border-rose-300 px-3 py-2 text-sm text-rose-950 font-semibold focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        </div>
                     </div>
-                    <span id="total-days-badge" class="text-xs font-bold bg-rose-600 text-white px-3 py-1 rounded-full shadow-sm">
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-end pt-2 sm:pt-0">
+                        <button type="button" onclick="toggleDateEditor()" class="px-3 py-2 rounded-xl text-xs font-semibold text-rose-700 hover:bg-rose-100">Kapat</button>
+                        <button type="button" onclick="saveNewDate()" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-bold bg-rose-600 hover:bg-rose-700 text-white shadow-md">Tarihi Kaydet</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Canlı Sayaç Kartı -->
+            <div class="glass-card rounded-3xl p-5 sm:p-7 max-w-4xl mx-auto">
+                <div class="flex flex-wrap items-center justify-between gap-2 mb-4 px-1">
+                    <span class="text-xs sm:text-sm font-semibold text-rose-800 flex items-center gap-1.5">
+                        <i data-lucide="heart" class="w-4 h-4 fill-rose-500 text-rose-500"></i>
+                        <span>Seninle geçen her saniye ömrümün en güzel hediyesi...</span>
+                    </span>
+                    <span id="total-days-pill" class="text-xs font-bold bg-rose-600 text-white px-3.5 py-1 rounded-full shadow-sm">
                         Toplam 0 Gün
                     </span>
                 </div>
 
-                <!-- 6'lı Sayaç Izgarası (Yıl, Ay, Gün, Saat, Dakika, Saniye) -->
-                <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4">
-                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
-                        <span id="cnt-years" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
-                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Yıl</span>
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-2.5 sm:gap-4">
+                    <div class="bg-white border border-rose-100 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="c-years" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
+                        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-rose-500 mt-1">Yıl</span>
                     </div>
-                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
-                        <span id="cnt-months" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
-                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Ay</span>
+                    <div class="bg-white border border-rose-100 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="c-months" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
+                        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-rose-500 mt-1">Ay</span>
                     </div>
-                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
-                        <span id="cnt-days" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
-                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Gün</span>
+                    <div class="bg-white border border-rose-100 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="c-days" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
+                        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-rose-500 mt-1">Gün</span>
                     </div>
-                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
-                        <span id="cnt-hours" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">00</span>
-                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Saat</span>
+                    <div class="bg-white border border-rose-100 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="c-hours" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">00</span>
+                        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-rose-500 mt-1">Saat</span>
                     </div>
-                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
-                        <span id="cnt-minutes" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">00</span>
-                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Dakika</span>
+                    <div class="bg-white border border-rose-100 rounded-2xl p-3 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="c-minutes" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">00</span>
+                        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-rose-500 mt-1">Dakika</span>
                     </div>
-                    <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-2xl p-3.5 sm:p-4 shadow-md flex flex-col items-center justify-center text-white">
-                        <span id="cnt-seconds" class="font-serif text-2xl sm:text-4xl font-bold tabular-nums">00</span>
-                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-100 mt-1">Saniye</span>
+                    <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-2xl p-3 sm:p-4 shadow-md flex flex-col items-center justify-center text-white">
+                        <span id="c-seconds" class="font-serif text-2xl sm:text-4xl font-bold tabular-nums">00</span>
+                        <span class="text-[11px] sm:text-xs font-bold uppercase tracking-wider text-rose-100 mt-1">Saniye</span>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 2. BÖLÜM: DİNAMİK FOTOĞRAF SLAYTI & GALERİSİ (ANILARIMIZ) -->
+        <!-- 2. BÖLÜM: FOTOĞRAF SLAYTI & DOĞRUDAN FOTOĞRAF YÜKLEME MERKEZİ -->
         <section class="space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div class="flex flex-wrap items-center justify-between gap-3 max-w-3xl mx-auto">
                 <div>
-                    <div class="inline-flex items-center gap-1.5 text-rose-600 text-xs font-bold uppercase tracking-wider mb-1">
-                        <i data-lucide="camera" class="w-3.5 h-3.5"></i>
-                        <span>Ortak Bulut Albümümüz</span>
-                    </div>
-                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-rose-950">Bizim Anılarımız</h2>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-rose-950 flex items-center gap-2">
+                        <span>📸 Bizim Anılarımız</span>
+                    </h2>
+                    <p class="text-xs sm:text-sm text-rose-700">Fotoğraflar 4 saniyede bir otomatik değişir, istediğin kadar fotoğraf ekleyebilirsin.</p>
                 </div>
 
-                <div class="flex flex-wrap items-center gap-2.5">
-                    <button onclick="openGalleryModal()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white/90 hover:bg-rose-50 px-3.5 py-2.5 rounded-xl border border-rose-200 shadow-sm transition-all">
-                        <i data-lucide="images" class="w-4 h-4 text-rose-600"></i>
-                        <span>Tüm Albümü Gör / Yönet</span>
+                <div class="flex items-center gap-2">
+                    <button type="button" onclick="togglePlay()" id="play-toggle-btn" class="flex items-center gap-1.5 text-xs font-bold text-rose-800 bg-white hover:bg-rose-50 px-3.5 py-2 rounded-xl border border-rose-200 shadow-sm transition-all">
+                        <span id="play-toggle-label">⏸ Duraklat</span>
                     </button>
-                    <button onclick="toggleSlideshowPlay()" id="play-pause-btn" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white/90 hover:bg-rose-50 px-3.5 py-2.5 rounded-xl border border-rose-200 shadow-sm transition-all">
-                        <i data-lucide="pause" id="play-pause-icon" class="w-4 h-4 text-rose-600"></i>
-                        <span id="play-pause-text">Otomatik: Açık</span>
-                    </button>
-                    <button onclick="openPhotoModal()" class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2.5 rounded-xl shadow-md shadow-rose-500/20 transition-all active:scale-95">
-                        <i data-lucide="image-plus" class="w-4 h-4"></i>
-                        <span>Anı / Fotoğraf Ekle</span>
-                    </button>
+                    <!-- Doğrudan Label ile Dosya Seçici (Mobil ve masaüstünde %100 çalışır) -->
+                    <label for="direct-file-input" class="cursor-pointer flex items-center gap-1.5 text-xs sm:text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-xl shadow-md transition-all active:scale-95">
+                        <span>➕ Fotoğraf Seç &amp; Yükle</span>
+                    </label>
+                    <input id="direct-file-input" type="file" accept="image/*" multiple class="hidden" onchange="onFilesSelected(event)">
                 </div>
             </div>
 
-            <!-- Ana Polaroid Vitrin Kartı -->
-            <div class="relative max-w-3xl mx-auto" onmouseenter="pauseOnHover(true)" onmouseleave="pauseOnHover(false)">
-                <div class="polaroid-frame rounded-3xl relative overflow-hidden">
-                    <!-- Fotoğraf Alanı -->
+            <!-- Ana Polaroid Çerçevesi (Sürükle-Bırak Destekli) -->
+            <div class="max-w-3xl mx-auto">
+                <div id="drop-zone" class="polaroid-frame rounded-3xl relative overflow-hidden">
+                    <!-- Resim Gösterim Alanı -->
                     <div class="relative aspect-[4/3] sm:aspect-[16/10] w-full rounded-2xl overflow-hidden bg-rose-950/5 flex items-center justify-center group">
-                        <!-- Bulanık Arka Plan Doldurma -->
-                        <img id="slide-bg-blur" src="" alt="" class="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-40 transition-all duration-700">
+                        <!-- Arka Plan Bulanık Efekt -->
+                        <img id="main-slide-blur" src="" alt="" class="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-40 transition-all duration-500">
                         
-                        <!-- Asıl Fotoğraf -->
-                        <img id="slide-image" src="" alt="Soner ve Erva Anısı" class="relative z-10 max-h-full max-w-full object-contain rounded-lg transition-all duration-500 shadow-sm">
+                        <!-- Ana Fotoğraf -->
+                        <img id="main-slide-img" src="" alt="Soner ve Erva" class="relative z-10 max-h-full max-w-full object-contain rounded-lg transition-all duration-500 shadow-sm">
 
-                        <!-- Sol / Sağ Gezinme Butonları -->
-                        <button onclick="prevSlide()" aria-label="Önceki Fotoğraf" class="absolute left-3 z-20 p-2.5 rounded-full bg-white/85 hover:bg-white text-rose-900 shadow-md backdrop-blur-sm transition-all opacity-90 sm:opacity-0 group-hover:opacity-100 active:scale-90">
-                            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                        <!-- Önceki / Sonraki Butonları -->
+                        <button type="button" onclick="prevPhoto()" class="absolute left-3 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-rose-900 shadow-md transition-all active:scale-90 font-bold text-lg">
+                            ‹
                         </button>
-                        <button onclick="nextSlide()" aria-label="Sonraki Fotoğraf" class="absolute right-3 z-20 p-2.5 rounded-full bg-white/85 hover:bg-white text-rose-900 shadow-md backdrop-blur-sm transition-all opacity-90 sm:opacity-0 group-hover:opacity-100 active:scale-90">
-                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
-                        </button>
-
-                        <!-- Mevcut Fotoğrafı Sil Butonu -->
-                        <button onclick="deleteCurrentPhoto()" title="Bu fotoğrafı herkesten kaldır" class="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/45 hover:bg-rose-600 text-white backdrop-blur-sm transition-all opacity-80 sm:opacity-0 group-hover:opacity-100">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        <button type="button" onclick="nextPhoto()" class="absolute right-3 z-20 w-10 h-10 flex items-center justify-center rounded-full bg-white/90 hover:bg-white text-rose-900 shadow-md transition-all active:scale-90 font-bold text-lg">
+                            ›
                         </button>
 
-                        <!-- Slayt İlerleme Çubuğu -->
-                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-rose-200/50 z-20">
-                            <div id="slide-progress" class="h-full bg-rose-500 transition-all duration-100" style="width: 0%"></div>
+                        <!-- Mevcut Fotoğrafı Silme Butonu -->
+                        <button type="button" onclick="removeCurrentPhoto()" title="Bu Fotoğrafı Sil" class="absolute top-3 right-3 z-20 px-3 py-1.5 rounded-full bg-black/60 hover:bg-rose-600 text-white text-xs font-semibold backdrop-blur-sm transition-all flex items-center gap-1">
+                            <span>🗑️ Sil</span>
+                        </button>
+
+                        <!-- Otomatik Geçiş Çubuğu -->
+                        <div class="absolute bottom-0 left-0 right-0 h-1.5 bg-rose-200/60 z-20">
+                            <div id="slide-timer-bar" class="h-full bg-rose-600 transition-all duration-100" style="width: 0%"></div>
                         </div>
                     </div>
 
-                    <!-- Polaroid Alt Yazı Alanı -->
-                    <div class="pt-5 px-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-center sm:text-left">
+                    <!-- Fotoğraf Altı Not ve Sayaç -->
+                    <div class="pt-4 px-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-center sm:text-left">
                         <div>
-                            <p id="slide-caption" class="font-serif italic text-lg sm:text-xl text-rose-950 font-medium">
-                                Yükleniyor...
+                            <p id="main-slide-caption" class="font-serif italic text-lg sm:text-xl text-rose-950 font-semibold">
+                                Seninle başlayan en güzel hikayemiz ❤️
                             </p>
-                            <p id="slide-date" class="text-xs text-rose-500 font-medium mt-0.5"></p>
+                            <p id="main-slide-date" class="text-xs text-rose-500 font-medium mt-0.5">Soner &amp; Erva</p>
                         </div>
-                        <div class="flex items-center justify-center gap-1.5 text-xs font-semibold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-full border border-rose-100 self-center sm:self-auto shrink-0">
-                            <span id="slide-counter">1 / 1</span>
-                        </div>
+                        <span id="main-slide-index" class="text-xs font-bold text-rose-700 bg-rose-50 px-3.5 py-1.5 rounded-full border border-rose-200 self-center sm:self-auto shrink-0">
+                            1 / 3
+                        </span>
                     </div>
                 </div>
 
-                <!-- Küçük Önizleme Noktaları / Küçük Resimler -->
-                <div id="thumbnails-container" class="flex items-center justify-center gap-2 mt-4 flex-wrap px-2"></div>
+                <!-- Küçük Resimler (Galeri Şeridi) -->
+                <div class="mt-4">
+                    <div class="flex items-center justify-between mb-2 px-1">
+                        <span class="text-xs font-bold uppercase tracking-wider text-rose-700">Albümdeki Fotoğraflar (Tıkla &amp; Seç):</span>
+                        <span id="photo-count-label" class="text-xs font-semibold text-rose-600">3 Fotoğraf</span>
+                    </div>
+                    <div id="thumbs-strip" class="flex items-center gap-2.5 overflow-x-auto pb-2 pt-1 px-1"></div>
+                </div>
+            </div>
+
+            <!-- DOĞRUDAN EKRANDA FOTOĞRAF EKLEME KARTI (Hiçbir Açılır Pencereye Gerek Kalmadan) -->
+            <div class="max-w-3xl mx-auto glass-card rounded-3xl p-5 sm:p-6 border-2 border-rose-200">
+                <h3 class="font-serif text-lg sm:text-xl font-bold text-rose-950 mb-1 flex items-center gap-2">
+                    <span>📥 Hemen Yeni Fotoğraf Ekle (Herkeste Kalıcı Olur)</span>
+                </h3>
+                <p class="text-xs sm:text-sm text-rose-700 mb-4">
+                    Aşağıdan telefonundan/bilgisayarından fotoğraf seçebilir veya bir fotoğraf linki yapıştırabilirsin. Eklediğin an slayt gösterisine girer!
+                </p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="block text-xs font-bold text-rose-800 uppercase mb-1">1. Fotoğraf Altı Notu (İsteğe Bağlı)</label>
+                        <input type="text" id="quick-caption-input" placeholder="Örn: Boğaz'da kahve keyfimiz ❤️" class="w-full rounded-xl border border-rose-200 bg-white px-3.5 py-2.5 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-rose-800 uppercase mb-1">2. Tarih / Yer Etiketi (İsteğe Bağlı)</label>
+                        <input type="text" id="quick-date-input" placeholder="Örn: Üsküdar, 2026" class="w-full rounded-xl border border-rose-200 bg-white px-3.5 py-2.5 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    </div>
+                </div>
+
+                <!-- Yöntem 1: Galeriden / Dosyadan Seç -->
+                <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                    <label for="direct-file-input-2" class="cursor-pointer flex-1 flex items-center justify-center gap-2 bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm py-3.5 px-5 rounded-2xl shadow-md transition-all active:scale-98 text-center">
+                        <span>📱 Galeriden / Bilgisayardan Fotoğraf Seç (Çoklu Seçebilirsin)</span>
+                    </label>
+                    <input id="direct-file-input-2" type="file" accept="image/*" multiple class="hidden" onchange="onFilesSelected(event)">
+                </div>
+
+                <!-- Yöntem 2: Link ile Ekle -->
+                <div class="mt-4 pt-4 border-t border-rose-200/70">
+                    <label class="block text-xs font-bold text-rose-800 uppercase mb-1.5">Veya Fotoğraf Linki (URL) Yapıştırarak Ekle:</label>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="url" id="quick-url-input" placeholder="https://ornek.com/fotograf.jpg" class="flex-1 rounded-xl border border-rose-200 bg-white px-3.5 py-2.5 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        <button type="button" onclick="addPhotoByUrl()" class="bg-rose-800 hover:bg-rose-900 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-sm transition-all shrink-0">
+                            Linkten Fotoğrafı Ekle
+                        </button>
+                    </div>
+                </div>
             </div>
         </section>
 
-        <!-- 3. BÖLÜM: DÖNÜŞÜMLÜ SEVGİ SÖZLERİ (ERVA'YA NOTLAR) -->
+        <!-- 3. BÖLÜM: ERVA'YA SEVGİ SÖZLERİ & NOT EKLEME -->
         <section class="max-w-3xl mx-auto">
-            <div class="glass-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
-                <!-- Dekoratif Arka Plan İkonu -->
-                <i data-lucide="quote" class="w-24 h-24 text-rose-200/40 absolute -top-3 -left-3 pointer-events-none"></i>
-
-                <div class="relative z-10 text-center space-y-6">
-                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100/90 text-rose-700 text-xs font-semibold">
-                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-500"></i>
-                        <span>Kalbimden Sana Notlar</span>
+            <div class="glass-card rounded-3xl p-6 sm:p-8 relative overflow-hidden space-y-6">
+                <div class="text-center space-y-4">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-bold">
+                        <span>💌 Soner'den Erva'ya Sevgi Sözleri</span>
                     </div>
 
-                    <div class="min-h-[110px] sm:min-h-[90px] flex flex-col items-center justify-center px-2">
-                        <p id="quote-text" class="font-serif italic text-xl sm:text-2xl text-rose-950 leading-relaxed fade-transition">
-                            "Seninle geçen her gün, hayatımın en güzel sayfası..."
+                    <div class="min-h-[100px] flex flex-col items-center justify-center px-2">
+                        <p id="quote-display-text" class="font-serif italic text-xl sm:text-2xl text-rose-950 leading-relaxed transition-opacity duration-300">
+                            "Seninle geçen her saniye, ömrüme eklenen en güzel hediye. İyi ki hayatımdasın Erva."
                         </p>
-                        <span id="quote-author" class="text-xs sm:text-sm font-semibold text-rose-600 mt-3 tracking-wide uppercase">
-                            — Soner'den Erva'ya
+                        <span id="quote-display-author" class="text-xs sm:text-sm font-bold text-rose-600 mt-3 tracking-wide uppercase">
+                            — Soner'den Erva'ya ❤️
                         </span>
                     </div>
 
-                    <div class="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-rose-200/60">
-                        <button onclick="prevQuote()" class="p-2 rounded-full bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 shadow-sm transition-all active:scale-95" title="Önceki Söz">
-                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    <div class="flex items-center justify-center gap-2">
+                        <button type="button" onclick="prevQuote()" class="px-3.5 py-2 rounded-full bg-white hover:bg-rose-50 text-rose-800 border border-rose-200 text-xs font-bold shadow-sm">
+                            ‹ Önceki Söz
                         </button>
-                        <button onclick="nextQuote()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white hover:bg-rose-50 px-4 py-2 rounded-full border border-rose-200 shadow-sm transition-all active:scale-95">
-                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-rose-500"></i>
-                            <span>Başka Bir Söz Göster</span>
+                        <button type="button" onclick="nextQuote()" class="px-4 py-2 rounded-full bg-white hover:bg-rose-50 text-rose-800 border border-rose-200 text-xs font-bold shadow-sm">
+                            🔄 Başka Söz Göster
                         </button>
-                        <button onclick="openQuoteModal()" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-full shadow-sm transition-all active:scale-95">
-                            <i data-lucide="heart-handshake" class="w-4 h-4"></i>
-                            <span>Yeni Söz Ekle</span>
+                    </div>
+                </div>
+
+                <!-- Doğrudan Yeni Sevgi Sözü Ekleme Alanı -->
+                <div class="pt-4 border-t border-rose-200/70">
+                    <label class="block text-xs font-bold uppercase text-rose-800 mb-2">✍️ Yeni Sevgi Sözü veya Özel Not Ekle:</label>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <input type="text" id="new-quote-input" placeholder="Erva'ya güzel bir söz yaz..." class="flex-1 rounded-xl border border-rose-200 bg-white px-3.5 py-2.5 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                        <button type="button" onclick="addNewQuote()" class="bg-rose-600 hover:bg-rose-700 text-white font-bold text-xs sm:text-sm px-5 py-2.5 rounded-xl shadow-sm transition-all shrink-0">
+                            💌 Sözü Ekle &amp; Kaydet
                         </button>
                     </div>
                 </div>
@@ -335,458 +361,114 @@
 
     </main>
 
-    <!-- Alt Bilgi (Footer) -->
-    <footer class="relative z-10 text-center py-8 px-4 text-xs sm:text-sm text-rose-700/80 border-t border-rose-200/40 mt-8">
-        <p class="flex items-center justify-center gap-1.5 font-medium">
-            <span>Soner tarafından Erva için sevgiyle hazırlandı</span>
-            <i data-lucide="heart" class="w-4 h-4 fill-rose-500 text-rose-500 inline animate-pulse"></i>
-        </p>
+    <!-- ALT BİLGİ -->
+    <footer class="relative z-10 text-center py-6 px-4 text-xs sm:text-sm text-rose-700 border-t border-rose-200/50 mt-6">
+        <p class="font-semibold">Soner tarafından Erva için sevgiyle hazırlandı ❤️</p>
     </footer>
 
-    <!-- =================================================================
-         MODALLAR (TARİH DÜZENLEME, FOTOĞRAF EKLEME, SÖZ EKLEME, YARDIM)
-    ================================================================== -->
-
-    <!-- 1. Tarih Düzenleme Modalı -->
-    <div id="date-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-5 animate-fade-in">
-            <div class="flex items-center justify-between">
-                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
-                    <i data-lucide="calendar-heart" class="w-5 h-5 text-rose-600"></i>
-                    <span>Yıldönümü Tarihimiz</span>
-                </h3>
-                <button onclick="closeDateModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <p class="text-xs sm:text-sm text-rose-700/90 leading-relaxed">
-                Erva ile çıktığınız tarihi ve saati seçin. Sayaç bu tarihe göre saniyesi saniyesine hesaplanacaktır.
-            </p>
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Başlangıç Tarihi</label>
-                    <input type="date" id="input-start-date" class="w-full rounded-xl border border-rose-200 px-3.5 py-2.5 text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Saat (İsteğe Bağlı)</label>
-                    <input type="time" id="input-start-time" value="00:00" class="w-full rounded-xl border border-rose-200 px-3.5 py-2.5 text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                </div>
-            </div>
-            <div class="flex items-center justify-end gap-2 pt-2">
-                <button onclick="closeDateModal()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-rose-700 hover:bg-rose-50">İptal</button>
-                <button onclick="saveStartDate()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-md">Kaydet</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. Fotoğraf / Anı Ekleme Modalı -->
-    <div id="photo-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm overflow-y-auto">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-5 my-8">
-            <div class="flex items-center justify-between">
-                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
-                    <i data-lucide="image-plus" class="w-5 h-5 text-rose-600"></i>
-                    <span>Ortak Albüme Fotoğraf Ekle</span>
-                </h3>
-                <button onclick="closePhotoModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <div class="bg-rose-50/70 border border-rose-200/70 rounded-2xl p-3 text-xs text-rose-800 flex items-center gap-2.5">
-                <i data-lucide="cloud-upload" class="w-5 h-5 text-rose-600 shrink-0"></i>
-                <span>Buradan yüklediğin fotoğraflar otomatik olarak buluta kaydedilir. Linke giren <strong>herkeste</strong> anında görünür ve kalıcı olur.</span>
-            </div>
-
-            <!-- Cihazdan Çoklu Fotoğraf Seçme Alanı -->
-            <div class="space-y-4">
-                <label class="flex flex-col items-center justify-center border-2 border-dashed border-rose-300 hover:border-rose-500 bg-rose-50/50 hover:bg-rose-50 rounded-2xl p-6 cursor-pointer transition-all text-center">
-                    <i data-lucide="upload-cloud" class="w-8 h-8 text-rose-500 mb-2"></i>
-                    <span class="text-sm font-semibold text-rose-900">Telefonundan veya Bilgisayarından Fotoğraf Seç</span>
-                    <span class="text-xs text-rose-600 mt-1">Birden fazla fotoğraf seçebilirsin (Bulut için otomatik optimize edilir)</span>
-                    <input type="file" id="input-photo-files" accept="image/*" multiple class="hidden" onchange="handleFileSelect(event)">
-                </label>
-
-                <div id="selected-files-preview" class="hidden text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center gap-2">
-                    <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0"></i>
-                    <span id="selected-files-count">0 fotoğraf seçildi</span>
-                </div>
-
-                <!-- Yükleme Durumu Göstergesi -->
-                <div id="upload-progress-box" class="hidden bg-rose-100/80 border border-rose-200 rounded-xl p-3 text-xs font-semibold text-rose-900 flex items-center gap-2">
-                    <div class="w-4 h-4 border-2 border-rose-600 border-t-transparent rounded-full animate-spin shrink-0"></div>
-                    <span id="upload-progress-text">Fotoğraflar buluta yükleniyor...</span>
-                </div>
-
-                <div class="relative flex py-1 items-center">
-                    <div class="flex-grow border-t border-rose-200"></div>
-                    <span class="flex-shrink mx-3 text-xs text-rose-400 uppercase font-semibold">veya bağlantı ile</span>
-                    <div class="flex-grow border-t border-rose-200"></div>
-                </div>
-
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Fotoğraf Adresi (URL - İsteğe Bağlı)</label>
-                    <input type="url" id="input-photo-url" placeholder="https://ornek.com/fotografimiz.jpg" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                </div>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Fotoğraf Notu / Başlığı</label>
-                        <input type="text" id="input-photo-caption" placeholder="Örn: İlk kahvemiz ❤️" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Tarih / Konum Etiketi</label>
-                        <input type="text" id="input-photo-date" placeholder="Örn: İstanbul, 2026" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                    </div>
-                </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-2 pt-2 border-t border-rose-100">
-                <button onclick="closePhotoModal()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-rose-700 hover:bg-rose-50">İptal</button>
-                <button onclick="saveNewPhotos()" id="save-photo-btn" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-md flex items-center gap-1.5">
-                    <i data-lucide="cloud-upload" class="w-4 h-4"></i>
-                    <span>Buluta Kaydet & Paylaş</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. Tüm Albümü Gör / Yönet Modalı -->
-    <div id="gallery-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm overflow-y-auto">
-        <div class="bg-white rounded-3xl max-w-3xl w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-5 my-8 max-h-[85vh] flex flex-col">
-            <div class="flex items-center justify-between shrink-0">
-                <div>
-                    <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
-                        <i data-lucide="images" class="w-5 h-5 text-rose-600"></i>
-                        <span>Ortak Bulut Albümümüz</span>
-                    </h3>
-                    <p class="text-xs text-rose-600 mt-0.5">Yüklenen tüm fotoğraflar burada listelenir. İstediğin fotoğrafı seçebilir veya silebilirsin.</p>
-                </div>
-                <button onclick="closeGalleryModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <div id="gallery-grid" class="grid grid-cols-2 sm:grid-cols-3 gap-4 overflow-y-auto pr-1 py-2">
-                <!-- JS ile doldurulur -->
-            </div>
-
-            <div class="flex items-center justify-between pt-3 border-t border-rose-100 shrink-0">
-                <button onclick="closeGalleryModal(); openPhotoModal();" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-rose-600 hover:text-rose-700">
-                    <i data-lucide="plus-circle" class="w-4 h-4"></i>
-                    <span>Yeni Fotoğraf Yükle</span>
-                </button>
-                <button onclick="closeGalleryModal()" class="px-5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-rose-900 text-white">Kapat</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 4. Sevgi Sözü Ekleme Modalı -->
-    <div id="quote-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-5">
-            <div class="flex items-center justify-between">
-                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
-                    <i data-lucide="heart-handshake" class="w-5 h-5 text-rose-600"></i>
-                    <span>Ortak Not / Sevgi Sözü Ekle</span>
-                </h3>
-                <button onclick="closeQuoteModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-
-            <div class="space-y-3">
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Sevgi Sözün veya Özel Notun</label>
-                    <textarea id="input-quote-text" rows="3" placeholder="Örn: Gülüşün, en sevdiğim mevsim..." class="w-full rounded-xl border border-rose-200 px-3.5 py-2.5 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Alt İmza</label>
-                    <input type="text" id="input-quote-author" value="Soner'den Erva'ya ❤️" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
-                </div>
-            </div>
-
-            <div class="flex items-center justify-end gap-2 pt-2">
-                <button onclick="closeQuoteModal()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-rose-700 hover:bg-rose-50">İptal</button>
-                <button onclick="saveNewQuote()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-md">Buluta Kaydet</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 5. Yardım & Bilgi Modalı -->
-    <div id="help-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm">
-        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-4">
-            <div class="flex items-center justify-between">
-                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
-                    <i data-lucide="sparkles" class="w-5 h-5 text-rose-600"></i>
-                    <span>Canlı Bulut Sistemi Nasıl Çalışır?</span>
-                </h3>
-                <button onclick="closeHelpModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
-                    <i data-lucide="x" class="w-5 h-5"></i>
-                </button>
-            </div>
-            <div class="text-xs sm:text-sm text-rose-800 space-y-3 leading-relaxed">
-                <p><strong>1. Herkeste Aynı Görünür:</strong> Bu site gerçek zamanlı bulut veritabanına bağlıdır. Sen veya Erva bir fotoğraf yüklediğinde, tarih değiştirdiğinde ya da yeni bir sevgi sözü eklediğinde <strong>linke giren herkeste</strong> saniyesinde güncellenir ve kalıcı olarak saklanır.</p>
-                <p><strong>2. Sürekli Fotoğraf Ekleme:</strong> <em>"Anı / Fotoğraf Ekle"</em> butonundan istediğin zaman yeni fotoğraflar seçip yükleyebilirsin. Fotoğraflar buluta uygun boyutta otomatik sıkıştırılarak kaydedilir.</p>
-                <p><strong>3. Albüm Yönetimi:</strong> <em>"Tüm Albümü Gör / Yönet"</em> butonuna tıklayarak şimdiye kadar yüklediğiniz tüm fotoğrafları bir arada görebilir ve istemediklerini silebilirsin.</p>
-            </div>
-            <div class="flex justify-end pt-2">
-                <button onclick="closeHelpModal()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 text-white">Harika!</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bildirim Kutusu (Toast) -->
-    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 bg-rose-950 text-white px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-medium">
-        <i data-lucide="heart" class="w-4 h-4 fill-rose-400 text-rose-400"></i>
-        <span id="toast-message">Kaydedildi!</span>
+    <!-- BİLDİRİM KUTUSU (TOAST) -->
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2 bg-rose-950 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-semibold border border-rose-700">
+        <span id="toast-msg">✅ Kaydedildi!</span>
     </div>
 
     <!-- =========================================================================
-         FIREBASE BULUT SENKRONİZASYONU VE UYGULAMA MANTIĞI
+         1. ANINDA ÇALIŞAN ANA JAVASCRIPT (SAYFAYI HİÇBİR ZAMAN BEKLETMEZ)
     ========================================================================== -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, doc, setDoc, addDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
-        // Romantik SVG Görsel Üretici (İlk kurulumda albüm boş kalmasın diye)
-        function createRomanticSvgDataUrl(title, subtitle, bgHex, textHex) {
+    <script>
+        // Şık Romantik Kapak Görselleri (SVG Data URL - İnternet kesik olsa bile anında açılır)
+        function makeRomanticCover(title, subtitle, c1, c2) {
             const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%">
                 <defs>
-                    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#fff1f2"/>
-                        <stop offset="50%" stop-color="${bgHex}"/>
-                        <stop offset="100%" stop-color="#ffe4e6"/>
+                    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="${c1}"/>
+                        <stop offset="100%" stop-color="${c2}"/>
                     </linearGradient>
                 </defs>
-                <rect width="1200" height="750" fill="url(#g)"/>
-                <circle cx="250" cy="180" r="220" fill="#ffffff" fill-opacity="0.35"/>
-                <circle cx="980" cy="580" r="260" fill="#ffffff" fill-opacity="0.35"/>
-                <path d="M600 290 C600 265 570 240 540 240 C505 240 480 270 480 305 C480 365 600 430 600 455 C600 430 720 365 720 305 C720 270 695 240 660 240 C630 240 600 265 600 290 Z" fill="${textHex}" fill-opacity="0.15"/>
-                <path d="M600 310 C600 295 582 280 564 280 C543 280 528 298 528 319 C528 355 600 394 600 409 C600 394 672 355 672 319 C672 298 657 280 636 280 C618 280 600 295 600 310 Z" fill="${textHex}" fill-opacity="0.8"/>
-                <text x="600" y="505" font-family="Georgia, serif" font-size="54" font-weight="bold" fill="${textHex}" text-anchor="middle">${title}</text>
-                <text x="600" y="560" font-family="sans-serif" font-size="26" fill="${textHex}" fill-opacity="0.8" text-anchor="middle">${subtitle}</text>
+                <rect width="1200" height="750" fill="url(#bg)"/>
+                <circle cx="200" cy="150" r="220" fill="#ffffff" fill-opacity="0.22"/>
+                <circle cx="1020" cy="600" r="260" fill="#ffffff" fill-opacity="0.22"/>
+                <path d="M600 280 C600 250 565 220 530 220 C490 220 460 255 460 295 C460 365 600 440 600 470 C600 440 740 365 740 295 C740 255 710 220 670 220 C635 220 600 250 600 280 Z" fill="#e11d48" fill-opacity="0.85"/>
+                <text x="600" y="535" font-family="Georgia, serif" font-size="56" font-weight="bold" fill="#4c0519" text-anchor="middle">${title}</text>
+                <text x="600" y="590" font-family="sans-serif" font-size="28" fill="#881337" text-anchor="middle">${subtitle}</text>
             </svg>`;
             return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
         }
 
-        const VARSAYILAN_VERILER = {
-            baslangicTarihi: "2025-02-14T14:00",
-            fotograflar: [
-                {
-                    id: 'seed-1',
-                    url: createRomanticSvgDataUrl("Soner & Erva", "Seninle Başlayan En Güzel Hikaye", "#fda4af", "#881337"),
-                    caption: "Seninle başlayan en güzel hikayemiz... İyi ki varsın Erva ❤️",
-                    date: "İlk Günümüz",
-                    createdAt: 1000
-                },
-                {
-                    id: 'seed-2',
-                    url: createRomanticSvgDataUrl("Birlikte Güzeliz", "Gülüşün Dünyamı Aydınlatıyor", "#fbcfe8", "#9d174d"),
-                    caption: "Yanında olduğum her an, zaman dursun istiyorum.",
-                    date: "Unutulmaz Anlarımız",
-                    createdAt: 2000
-                }
-            ],
-            sevgiSozleri: [
-                {
-                    text: "Seninle geçen her saniye, ömrüme eklenen en güzel hediye. İyi ki hayatımdasın Erva.",
-                    author: "Soner'den Erva'ya ❤️",
-                    createdAt: 1000
-                },
-                {
-                    text: "Gözlerinin içine baktığımda, evimin neresi olduğunu bir kez daha anlıyorum.",
-                    author: "Soner'den Erva'ya",
-                    createdAt: 2000
-                },
-                {
-                    text: "Takvimler ne kadar ilerlerse ilerlesin, sana olan sevgim hep ilk günkü gibi taze ve heyecanlı.",
-                    author: "Seni Çok Seven Soner",
-                    createdAt: 3000
-                },
-                {
-                    text: "Sen benim en güzel tesadüfüm, en doğru kararım ve en tatlı huzurumsun.",
-                    author: "Soner & Erva",
-                    createdAt: 4000
-                },
-                {
-                    text: "Birlikte güldüğümüz, birlikte hayal kurduğumuz nice yıllara sevgilim...",
-                    author: "Sonsuza Dek",
-                    createdAt: 5000
-                }
-            ]
+        const DEFAULT_PHOTOS = [
+            {
+                id: 'default-1',
+                url: makeRomanticCover("Soner & Erva", "Seninle Başlayan En Güzel Hikaye ❤️", "#ffe4e6", "#fda4af"),
+                caption: "Seninle başlayan en güzel hikayemiz... İyi ki varsın Erva ❤️",
+                date: "İlk Günümüz",
+                createdAt: 100
+            },
+            {
+                id: 'default-2',
+                url: makeRomanticCover("Her Saniye Seninle", "Gülüşün Dünyamı Aydınlatıyor", "#fce7f3", "#f9a8d4"),
+                caption: "Yanında olduğum her an zaman dursun istiyorum.",
+                date: "Sonsuzluğumuz",
+                createdAt: 200
+            },
+            {
+                id: 'default-3',
+                url: makeRomanticCover("İyi Ki Varsın Sevgilim", "Birlikte Nice Güzel Yıllara", "#fff1f2", "#fecdd3"),
+                caption: "Aşağıdan kendi fotoğraflarımızı yükleyebilirsin sevgilim!",
+                date: "Ortak Albümümüz",
+                createdAt: 300
+            }
+        ];
+
+        const DEFAULT_QUOTES = [
+            { text: "Seninle geçen her saniye, ömrüme eklenen en güzel hediye. İyi ki hayatımdasın Erva.", author: "Soner'den Erva'ya ❤️", createdAt: 100 },
+            { text: "Gözlerinin içine baktığımda, evimin neresi olduğunu bir kez daha anlıyorum.", author: "Soner'den Erva'ya", createdAt: 200 },
+            { text: "Takvimler ne kadar ilerlerse ilerlesin, sana olan sevgim hep ilk günkü gibi taze.", author: "Seni Çok Seven Soner", createdAt: 300 },
+            { text: "Sen benim en güzel tesadüfüm, en doğru kararım ve en tatlı huzurumsun.", author: "Soner & Erva", createdAt: 400 },
+            { text: "Birlikte güldüğümüz, birlikte hayal kurduğumuz nice güzel yıllara sevgilim...", author: "Sonsuza Dek ❤️", createdAt: 500 }
+        ];
+
+        // Uygulama Durumu
+        window.appState = {
+            startDate: "2025-02-14T14:00",
+            photos: [...DEFAULT_PHOTOS],
+            quotes: [...DEFAULT_QUOTES],
+            slideIndex: 0,
+            quoteIndex: 0,
+            isPlaying: true,
+            timerProgress: 0
         };
 
-        // Durum Değişkenleri
-        let startDate = VARSAYILAN_VERILER.baslangicTarihi;
-        let photos = [...VARSAYILAN_VERILER.fotograflar];
-        let quotes = [...VARSAYILAN_VERILER.sevgiSozleri];
+        // Bildirim Gösterici
+        window.showToast = function(msg) {
+            const box = document.getElementById('toast-box');
+            const text = document.getElementById('toast-msg');
+            if (!box || !text) return;
+            text.textContent = msg;
+            box.classList.remove('hidden');
+            box.classList.add('flex');
+            clearTimeout(window._toastTimer);
+            window._toastTimer = setTimeout(() => {
+                box.classList.add('hidden');
+                box.classList.remove('flex');
+            }, 3500);
+        };
 
-        let currentSlideIndex = 0;
-        let isPlaying = true;
-        let isHoverPaused = false;
-        let progressInterval = null;
-        let slideProgress = 0;
-        const SLIDE_DURATION = 4500;
-
-        let currentQuoteIndex = 0;
-        let pendingUploadedPhotos = [];
-
-        // Firebase Değişkenleri
-        let db = null;
-        let auth = null;
-        let currentUser = null;
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'soner-erva-love-app';
-
-        function setCloudStatus(online, message) {
-            const dot = document.getElementById('cloud-status-dot');
-            const text = document.getElementById('cloud-status-text');
-            const badge = document.getElementById('cloud-status-badge');
-            if (!dot || !text) return;
-
-            if (online) {
-                dot.className = "w-2 h-2 rounded-full bg-emerald-500";
-                badge.className = "inline-flex items-center gap-1.5 bg-emerald-50/90 text-emerald-800 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm";
-                text.textContent = message || "Bulut Senkronize • Herkeste Aynı";
-            } else {
-                dot.className = "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
-                badge.className = "inline-flex items-center gap-1.5 bg-amber-50/90 text-amber-800 border border-amber-200 px-3 py-1.5 rounded-full text-xs font-semibold shadow-sm";
-                text.textContent = message || "Bağlanıyor...";
-            }
-        }
-
-        async function initFirebaseCloud() {
-            try {
-                if (typeof __firebase_config === 'undefined' || !__firebase_config) {
-                    setCloudStatus(false, "Yerel Önizleme Modu");
-                    return;
-                }
-
-                const firebaseConfig = JSON.parse(__firebase_config);
-                const app = initializeApp(firebaseConfig);
-                auth = getAuth(app);
-                db = getFirestore(app);
-
-                // KURAL 3: Önce kimlik doğrulaması
-                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-                    await signInWithCustomToken(auth, __initial_auth_token);
-                } else {
-                    await signInAnonymously(auth);
-                }
-
-                onAuthStateChanged(auth, (user) => {
-                    currentUser = user;
-                    if (user) {
-                        setupRealtimeListeners();
-                    }
-                });
-            } catch (err) {
-                console.error("Bulut başlatma hatası:", err);
-                setCloudStatus(false, "Bağlantı Bekleniyor");
-            }
-        }
-
-        function setupRealtimeListeners() {
-            if (!currentUser || !db) return;
-
-            // 1. Ortak Başlangıç Tarihi Dinleyicisi
-            const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'relationship_config', 'main');
-            onSnapshot(configDocRef, (snap) => {
-                if (snap.exists() && snap.data().startDate) {
-                    startDate = snap.data().startDate;
-                    updateCounter();
-                } else {
-                    setDoc(configDocRef, {
-                        startDate: VARSAYILAN_VERILER.baslangicTarihi,
-                        couple: "Soner & Erva",
-                        updatedAt: Date.now()
-                    }).catch(() => {});
-                }
-                setCloudStatus(true, "Bulut Senkronize • Herkeste Aynı");
-            }, (err) => {
-                console.error("Tarih okuma hatası:", err);
-            });
-
-            // 2. Ortak Fotoğraflar Koleksiyonu Dinleyicisi
-            const photosColRef = collection(db, 'artifacts', appId, 'public', 'data', 'photos');
-            onSnapshot(photosColRef, (snap) => {
-                const loadedPhotos = [];
-                snap.forEach((docSnap) => {
-                    const data = docSnap.data();
-                    loadedPhotos.push({
-                        id: docSnap.id,
-                        url: data.imageUrl || data.url,
-                        caption: data.caption || "Soner & Erva ❤️",
-                        date: data.date || "",
-                        createdAt: data.createdAt || 0
-                    });
-                });
-
-                // Yeni eklenen fotoğraflar en başta görünecek şekilde bellekte sırala (KURAL 2)
-                loadedPhotos.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-
-                if (loadedPhotos.length > 0) {
-                    photos = loadedPhotos;
-                } else {
-                    photos = [...VARSAYILAN_VERILER.fotograflar];
-                }
-
-                if (currentSlideIndex >= photos.length) {
-                    currentSlideIndex = 0;
-                }
-                renderSlide();
-                renderGalleryGrid();
-            }, (err) => {
-                console.error("Fotoğraf senkronizasyon hatası:", err);
-            });
-
-            // 3. Ortak Sevgi Sözleri Koleksiyonu Dinleyicisi
-            const quotesColRef = collection(db, 'artifacts', appId, 'public', 'data', 'quotes');
-            onSnapshot(quotesColRef, async (snap) => {
-                if (snap.empty) {
-                    // İlk açılışta varsayılan sözleri buluta kaydet
-                    for (const item of VARSAYILAN_VERILER.sevgiSozleri) {
-                        await addDoc(quotesColRef, item).catch(() => {});
-                    }
-                    return;
-                }
-
-                const loadedQuotes = [];
-                snap.forEach((docSnap) => {
-                    const d = docSnap.data();
-                    loadedQuotes.push({
-                        id: docSnap.id,
-                        text: d.text,
-                        author: d.author || "Soner'den Erva'ya ❤️",
-                        createdAt: d.createdAt || 0
-                    });
-                });
-
-                loadedQuotes.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-                quotes = loadedQuotes;
-                if (currentQuoteIndex >= quotes.length) currentQuoteIndex = 0;
-                renderQuote();
-            }, (err) => {
-                console.error("Sözler senkronizasyon hatası:", err);
-            });
-        }
-
-        /* =========================================================================
-           CANLI İLİŞKİ SAYACI HESAPLAMA
-        ========================================================================= */
-        function updateCounter() {
-            const start = new Date(startDate);
+        // 1. CANLI SAYAÇ GÜNCELLEME
+        window.updateLiveCounter = function() {
+            const start = new Date(window.appState.startDate);
             const now = new Date();
 
-            const dateFormatter = new Intl.DateTimeFormat('tr-TR', {
-                day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
-            document.getElementById('start-date-display').textContent = `Başlangıç Tarihimiz: ${dateFormatter.format(start)}`;
+            if (!isNaN(start.getTime())) {
+                const fmt = new Intl.DateTimeFormat('tr-TR', {
+                    day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+                });
+                document.getElementById('start-date-label').textContent = `Başlangıç Tarihimiz: ${fmt.format(start)}`;
+            }
 
-            let diffMs = now - start;
-            if (diffMs < 0) diffMs = 0;
+            let diff = now - start;
+            if (isNaN(diff) || diff < 0) diff = 0;
 
-            const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-            document.getElementById('total-days-badge').textContent = `Toplam ${totalDays.toLocaleString('tr-TR')} Gün`;
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            document.getElementById('total-days-pill').textContent = `Toplam ${totalDays.toLocaleString('tr-TR')} Gün`;
 
             let years = now.getFullYear() - start.getFullYear();
             let months = now.getMonth() - start.getMonth();
@@ -804,487 +486,515 @@
                 months--;
             }
             if (months < 0) { months += 12; years--; }
-
-            if (years < 0) {
+            if (years < 0 || isNaN(years)) {
                 years = 0; months = 0; days = 0; hours = 0; minutes = 0; seconds = 0;
             }
 
-            document.getElementById('cnt-years').textContent = years;
-            document.getElementById('cnt-months').textContent = months;
-            document.getElementById('cnt-days').textContent = days;
-            document.getElementById('cnt-hours').textContent = String(hours).padStart(2, '0');
-            document.getElementById('cnt-minutes').textContent = String(minutes).padStart(2, '0');
-            document.getElementById('cnt-seconds').textContent = String(seconds).padStart(2, '0');
-        }
+            document.getElementById('c-years').textContent = years;
+            document.getElementById('c-months').textContent = months;
+            document.getElementById('c-days').textContent = days;
+            document.getElementById('c-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('c-minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('c-seconds').textContent = String(seconds).padStart(2, '0');
+        };
 
-        /* =========================================================================
-           FOTOĞRAF SLAYT GÖSTERİSİ VE BULUT YÜKLEME
-        ========================================================================= */
-        function renderSlide() {
-            if (!photos.length) return;
-            if (currentSlideIndex >= photos.length) currentSlideIndex = 0;
-            if (currentSlideIndex < 0) currentSlideIndex = photos.length - 1;
+        window.toggleDateEditor = function() {
+            const box = document.getElementById('inline-date-editor');
+            if (box.classList.contains('hidden')) {
+                const parts = window.appState.startDate.split('T');
+                document.getElementById('date-input').value = parts[0] || "2025-02-14";
+                document.getElementById('time-input').value = (parts[1] || "14:00").slice(0, 5);
+                box.classList.remove('hidden');
+            } else {
+                box.classList.add('hidden');
+            }
+        };
 
-            const current = photos[currentSlideIndex];
-            const imgEl = document.getElementById('slide-image');
-            const bgBlurEl = document.getElementById('slide-bg-blur');
+        window.saveNewDate = function() {
+            const d = document.getElementById('date-input').value;
+            const t = document.getElementById('time-input').value || "00:00";
+            if (!d) {
+                window.showToast("⚠️ Lütfen bir tarih seçin.");
+                return;
+            }
+            const combined = `${d}T${t}`;
+            window.appState.startDate = combined;
+            window.updateLiveCounter();
+            document.getElementById('inline-date-editor').classList.add('hidden');
+            window.showToast("✅ Başlangıç tarihiniz güncellendi!");
 
-            imgEl.style.opacity = '0.25';
-            setTimeout(() => {
-                imgEl.src = current.url;
-                bgBlurEl.src = current.url;
-                document.getElementById('slide-caption').textContent = current.caption || "Seninle güzel bir anımız ❤️";
-                document.getElementById('slide-date').textContent = current.date || "Soner & Erva";
-                document.getElementById('slide-counter').textContent = `${currentSlideIndex + 1} / ${photos.length}`;
-                imgEl.style.opacity = '1';
-            }, 160);
+            if (typeof window.syncDateToCloud === 'function') {
+                window.syncDateToCloud(combined);
+            }
+        };
 
-            renderThumbnails();
-            resetSlideProgress();
-        }
+        // 2. SLAYT VE GALERİ GÜNCELLEME
+        window.renderSlideshow = function() {
+            const list = window.appState.photos;
+            if (!list || list.length === 0) {
+                window.appState.photos = [...DEFAULT_PHOTOS];
+            }
+            if (window.appState.slideIndex >= window.appState.photos.length) {
+                window.appState.slideIndex = 0;
+            }
+            if (window.appState.slideIndex < 0) {
+                window.appState.slideIndex = window.appState.photos.length - 1;
+            }
 
-        function renderThumbnails() {
-            const container = document.getElementById('thumbnails-container');
-            container.innerHTML = '';
-            photos.forEach((photo, idx) => {
+            const item = window.appState.photos[window.appState.slideIndex];
+            const mainImg = document.getElementById('main-slide-img');
+            const blurImg = document.getElementById('main-slide-blur');
+
+            mainImg.src = item.url;
+            blurImg.src = item.url;
+            document.getElementById('main-slide-caption').textContent = item.caption || "Soner ❤️ Erva";
+            document.getElementById('main-slide-date').textContent = item.date || "Bizim Anımız";
+            document.getElementById('main-slide-index').textContent = `${window.appState.slideIndex + 1} / ${window.appState.photos.length}`;
+            document.getElementById('photo-count-label').textContent = `${window.appState.photos.length} Fotoğraf`;
+
+            window.renderThumbnails();
+            window.appState.timerProgress = 0;
+        };
+
+        window.renderThumbnails = function() {
+            const strip = document.getElementById('thumbs-strip');
+            strip.innerHTML = '';
+            window.appState.photos.forEach((photo, idx) => {
+                const active = idx === window.appState.slideIndex;
                 const btn = document.createElement('button');
-                const isActive = idx === currentSlideIndex;
-                btn.className = `h-12 w-12 sm:h-14 sm:w-14 rounded-xl overflow-hidden border-2 transition-all ${
-                    isActive ? 'border-rose-600 scale-105 shadow-md ring-2 ring-rose-300' : 'border-white/80 opacity-60 hover:opacity-100'
+                btn.type = 'button';
+                btn.className = `relative shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 transition-all ${
+                    active ? 'border-rose-600 ring-2 ring-rose-300 scale-105 shadow-md' : 'border-white opacity-70 hover:opacity-100'
                 }`;
                 btn.onclick = () => {
-                    currentSlideIndex = idx;
-                    renderSlide();
+                    window.appState.slideIndex = idx;
+                    window.renderSlideshow();
                 };
                 btn.innerHTML = `<img src="${photo.url}" alt="" class="w-full h-full object-cover">`;
-                container.appendChild(btn);
+                strip.appendChild(btn);
             });
-        }
-
-        function renderGalleryGrid() {
-            const grid = document.getElementById('gallery-grid');
-            if (!grid) return;
-            grid.innerHTML = '';
-
-            photos.forEach((photo, index) => {
-                const card = document.createElement('div');
-                card.className = "group relative rounded-2xl overflow-hidden border border-rose-200 bg-rose-50/40 shadow-sm flex flex-col justify-between";
-                card.innerHTML = `
-                    <div class="aspect-[4/3] w-full overflow-hidden bg-rose-950/5 relative cursor-pointer" onclick="selectSlideFromGallery(${index})">
-                        <img src="${photo.url}" alt="" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                    </div>
-                    <div class="p-2.5 flex items-center justify-between gap-2 bg-white">
-                        <div class="truncate">
-                            <p class="text-xs font-semibold text-rose-950 truncate">${photo.caption || 'Anımız'}</p>
-                            <p class="text-[10px] text-rose-500 truncate">${photo.date || ''}</p>
-                        </div>
-                        <button onclick="deletePhotoById('${photo.id}')" title="Sil" class="p-1.5 rounded-lg text-rose-500 hover:bg-rose-100 hover:text-rose-700 shrink-0 transition-colors">
-                            <i data-lucide="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
-
-        window.selectSlideFromGallery = function(idx) {
-            currentSlideIndex = idx;
-            renderSlide();
-            closeGalleryModal();
         };
 
-        window.nextSlide = function() {
-            currentSlideIndex = (currentSlideIndex + 1) % photos.length;
-            renderSlide();
+        window.nextPhoto = function() {
+            window.appState.slideIndex = (window.appState.slideIndex + 1) % window.appState.photos.length;
+            window.renderSlideshow();
         };
 
-        window.prevSlide = function() {
-            currentSlideIndex = (currentSlideIndex - 1 + photos.length) % photos.length;
-            renderSlide();
+        window.prevPhoto = function() {
+            window.appState.slideIndex = (window.appState.slideIndex - 1 + window.appState.photos.length) % window.appState.photos.length;
+            window.renderSlideshow();
         };
 
-        function resetSlideProgress() {
-            slideProgress = 0;
-            const bar = document.getElementById('slide-progress');
-            if (bar) bar.style.width = '0%';
-            if (progressInterval) clearInterval(progressInterval);
-
-            if (isPlaying && !isHoverPaused) {
-                const step = 100 / (SLIDE_DURATION / 100);
-                progressInterval = setInterval(() => {
-                    slideProgress += step;
-                    if (slideProgress >= 100) {
-                        slideProgress = 0;
-                        window.nextSlide();
-                    } else if (bar) {
-                        bar.style.width = `${slideProgress}%`;
-                    }
-                }, 100);
-            }
-        }
-
-        window.pauseOnHover = function(hovering) {
-            isHoverPaused = hovering;
-            resetSlideProgress();
+        window.togglePlay = function() {
+            window.appState.isPlaying = !window.appState.isPlaying;
+            const label = document.getElementById('play-toggle-label');
+            label.textContent = window.appState.isPlaying ? "⏸ Duraklat" : "▶️ Oynat";
         };
 
-        window.toggleSlideshowPlay = function() {
-            isPlaying = !isPlaying;
-            const textEl = document.getElementById('play-pause-text');
-            const iconEl = document.getElementById('play-pause-icon');
-
-            if (isPlaying) {
-                textEl.textContent = "Otomatik: Açık";
-                iconEl.setAttribute('data-lucide', 'pause');
-                resetSlideProgress();
-            } else {
-                textEl.textContent = "Otomatik: Duraklatıldı";
-                iconEl.setAttribute('data-lucide', 'play');
-                if (progressInterval) clearInterval(progressInterval);
-            }
-            lucide.createIcons();
-        };
-
-        // Fotoğrafları Firestore 1MB limitine uygun olacak şekilde (~80-120KB) sıkıştır
-        window.handleFileSelect = function(event) {
-            const files = Array.from(event.target.files);
-            if (!files.length) return;
-
-            pendingUploadedPhotos = [];
-            const previewBox = document.getElementById('selected-files-preview');
-            const countText = document.getElementById('selected-files-count');
-
-            previewBox.classList.remove('hidden');
-            countText.textContent = `${files.length} fotoğraf bulut için hazırlanıyor...`;
-
-            let processed = 0;
-            files.forEach((file) => {
+        // 3. FOTOĞRAF SIKIŞTIRMA VE ANINDA EKLEME (0.1 SANİYEDE EKRANDA GÖRÜNÜR)
+        function compressImageFile(file) {
+            return new Promise((resolve) => {
                 const reader = new FileReader();
                 reader.onload = (e) => {
                     const img = new Image();
                     img.onload = () => {
                         const canvas = document.createElement('canvas');
-                        const MAX_DIM = 900;
-                        let width = img.width;
-                        let height = img.height;
+                        const MAX_SIZE = 800;
+                        let w = img.width;
+                        let h = img.height;
 
-                        if (width > height && width > MAX_DIM) {
-                            height = Math.round((height * MAX_DIM) / width);
-                            width = MAX_DIM;
-                        } else if (height >= width && height > MAX_DIM) {
-                            width = Math.round((width * MAX_DIM) / height);
-                            height = MAX_DIM;
+                        if (w > h && w > MAX_SIZE) {
+                            h = Math.round((h * MAX_SIZE) / w);
+                            w = MAX_SIZE;
+                        } else if (h >= w && h > MAX_SIZE) {
+                            w = Math.round((w * MAX_SIZE) / h);
+                            h = MAX_SIZE;
                         }
 
-                        canvas.width = width;
-                        canvas.height = height;
+                        canvas.width = w;
+                        canvas.height = h;
                         const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.72);
-                        pendingUploadedPhotos.push(compressedDataUrl);
-                        processed++;
-
-                        if (processed === files.length) {
-                            countText.textContent = `${files.length} fotoğraf buluta yüklenmeye hazır!`;
-                        }
+                        ctx.drawImage(img, 0, 0, w, h);
+                        // Firestore 1MB limitini asla aşmamak için 0.65 JPEG kalitesi (~60-110KB)
+                        resolve(canvas.toDataURL('image/jpeg', 0.65));
                     };
+                    img.onerror = () => resolve(e.target.result);
                     img.src = e.target.result;
                 };
                 reader.readAsDataURL(file);
             });
-        };
-
-        window.saveNewPhotos = async function() {
-            const urlInput = document.getElementById('input-photo-url').value.trim();
-            const captionInput = document.getElementById('input-photo-caption').value.trim() || "Erva ile Güzel Bir Anımız ❤️";
-            const dateInput = document.getElementById('input-photo-date').value.trim() || new Date().toLocaleDateString('tr-TR');
-
-            if (pendingUploadedPhotos.length === 0 && !urlInput) {
-                showToast("Lütfen bir fotoğraf seçin veya bağlantı girin.");
-                return;
-            }
-
-            const progressBox = document.getElementById('upload-progress-box');
-            const progressText = document.getElementById('upload-progress-text');
-            const saveBtn = document.getElementById('save-photo-btn');
-
-            progressBox.classList.remove('hidden');
-            saveBtn.disabled = true;
-            saveBtn.classList.add('opacity-60');
-
-            const allToSave = [...pendingUploadedPhotos];
-            if (urlInput) allToSave.push(urlInput);
-
-            try {
-                if (currentUser && db) {
-                    const photosColRef = collection(db, 'artifacts', appId, 'public', 'data', 'photos');
-                    for (let i = 0; i < allToSave.length; i++) {
-                        progressText.textContent = `Fotoğraflar buluta yükleniyor (${i + 1}/${allToSave.length})...`;
-                        await addDoc(photosColRef, {
-                            imageUrl: allToSave[i],
-                            caption: captionInput,
-                            date: dateInput,
-                            createdAt: Date.now() + i
-                        });
-                    }
-                } else {
-                    // Yerel yedek
-                    allToSave.forEach((imgUrl, i) => {
-                        photos.unshift({
-                            id: 'local-' + Date.now() + '-' + i,
-                            url: imgUrl,
-                            caption: captionInput,
-                            date: dateInput,
-                            createdAt: Date.now() + i
-                        });
-                    });
-                    renderSlide();
-                }
-
-                currentSlideIndex = 0;
-                closePhotoModal();
-                showToast(`${allToSave.length} yeni fotoğraf buluta kaydedildi! Herkeste görünür ❤️`);
-            } catch (err) {
-                console.error("Fotoğraf yükleme hatası:", err);
-                showToast("Yükleme sırasında bir hata oluştu, lütfen tekrar deneyin.");
-            } finally {
-                progressBox.classList.add('hidden');
-                saveBtn.disabled = false;
-                saveBtn.classList.remove('opacity-60');
-            }
-        };
-
-        window.deletePhotoById = async function(photoId) {
-            if (!photoId || String(photoId).startsWith('seed-')) {
-                showToast("Kendi fotoğrafınızı eklediğinizde bu örnek görsel otomatik kalkacaktır.");
-                return;
-            }
-
-            try {
-                if (currentUser && db) {
-                    const docRef = doc(db, 'artifacts', appId, 'public', 'data', 'photos', photoId);
-                    await deleteDoc(docRef);
-                    showToast("Fotoğraf ortak albümden silindi.");
-                } else {
-                    photos = photos.filter(p => p.id !== photoId);
-                    renderSlide();
-                    renderGalleryGrid();
-                }
-            } catch (err) {
-                console.error("Silme hatası:", err);
-                showToast("Fotoğraf silinemedi.");
-            }
-        };
-
-        window.deleteCurrentPhoto = async function() {
-            const current = photos[currentSlideIndex];
-            if (!current) return;
-            await window.deletePhotoById(current.id);
-        };
-
-        /* =========================================================================
-           DÖNÜŞÜMLÜ SEVGİ SÖZLERİ
-        ========================================================================= */
-        function renderQuote() {
-            if (!quotes.length) return;
-            const quoteTextEl = document.getElementById('quote-text');
-            const quoteAuthorEl = document.getElementById('quote-author');
-
-            quoteTextEl.style.opacity = '0';
-            setTimeout(() => {
-                const q = quotes[currentQuoteIndex];
-                quoteTextEl.textContent = `"${q.text}"`;
-                quoteAuthorEl.textContent = `— ${q.author || "Soner'den Erva'ya"}`;
-                quoteTextEl.style.opacity = '1';
-            }, 220);
         }
 
+        function insertNewPhotoImmediately(photoObj) {
+            // Eğer sadece varsayılan kapaklar varsa, yeni fotoğrafı en başa koy
+            window.appState.photos = window.appState.photos.filter(p => !String(p.id).startsWith('default-'));
+            window.appState.photos.unshift(photoObj);
+            window.appState.slideIndex = 0;
+            window.renderSlideshow();
+
+            if (typeof window.syncPhotoToCloud === 'function') {
+                window.syncPhotoToCloud(photoObj);
+            }
+        }
+
+        window.onFilesSelected = async function(event) {
+            const files = Array.from(event.target.files || []);
+            if (!files.length) return;
+
+            const captionInput = document.getElementById('quick-caption-input');
+            const dateInput = document.getElementById('quick-date-input');
+            const captionText = (captionInput && captionInput.value.trim()) || "Soner ❤️ Erva";
+            const dateText = (dateInput && dateInput.value.trim()) || new Date().toLocaleDateString('tr-TR');
+
+            window.showToast(`⏳ ${files.length} fotoğraf ekleniyor...`);
+
+            for (let i = 0; i < files.length; i++) {
+                const dataUrl = await compressImageFile(files[i]);
+                const newPhoto = {
+                    id: 'photo_' + Date.now() + '_' + i,
+                    url: dataUrl,
+                    caption: captionText,
+                    date: dateText,
+                    createdAt: Date.now() + i
+                };
+                insertNewPhotoImmediately(newPhoto);
+            }
+
+            if (captionInput) captionInput.value = '';
+            if (dateInput) dateInput.value = '';
+            event.target.value = '';
+            window.showToast(`✅ ${files.length} fotoğraf eklendi ve kalıcı olarak kaydedildi!`);
+        };
+
+        window.addPhotoByUrl = function() {
+            const urlInput = document.getElementById('quick-url-input');
+            const captionInput = document.getElementById('quick-caption-input');
+            const dateInput = document.getElementById('quick-date-input');
+
+            const url = urlInput.value.trim();
+            if (!url) {
+                window.showToast("⚠️ Lütfen önce bir fotoğraf linki yapıştırın.");
+                return;
+            }
+
+            const newPhoto = {
+                id: 'photo_' + Date.now(),
+                url: url,
+                caption: captionInput.value.trim() || "Soner ❤️ Erva",
+                date: dateInput.value.trim() || new Date().toLocaleDateString('tr-TR'),
+                createdAt: Date.now()
+            };
+
+            insertNewPhotoImmediately(newPhoto);
+            urlInput.value = '';
+            captionInput.value = '';
+            dateInput.value = '';
+            window.showToast("✅ Fotoğraf linkten eklendi ve kaydedildi!");
+        };
+
+        window.removeCurrentPhoto = function() {
+            const current = window.appState.photos[window.appState.slideIndex];
+            if (!current) return;
+
+            window.appState.photos = window.appState.photos.filter(p => p.id !== current.id);
+            if (window.appState.photos.length === 0) {
+                window.appState.photos = [...DEFAULT_PHOTOS];
+            }
+            window.appState.slideIndex = 0;
+            window.renderSlideshow();
+            window.showToast("🗑️ Fotoğraf albümden kaldırıldı.");
+
+            if (typeof window.deletePhotoFromCloud === 'function' && !String(current.id).startsWith('default-')) {
+                window.deletePhotoFromCloud(current.id);
+            }
+        };
+
+        // 4. SEVGİ SÖZLERİ KONTROLLERİ
+        window.renderQuotes = function() {
+            const list = window.appState.quotes;
+            if (!list || !list.length) return;
+            if (window.appState.quoteIndex >= list.length) window.appState.quoteIndex = 0;
+            if (window.appState.quoteIndex < 0) window.appState.quoteIndex = list.length - 1;
+
+            const q = list[window.appState.quoteIndex];
+            const textEl = document.getElementById('quote-display-text');
+            const authorEl = document.getElementById('quote-display-author');
+
+            textEl.style.opacity = '0.2';
+            setTimeout(() => {
+                textEl.textContent = `"${q.text}"`;
+                authorEl.textContent = `— ${q.author || "Soner'den Erva'ya ❤️"}`;
+                textEl.style.opacity = '1';
+            }, 150);
+        };
+
         window.nextQuote = function() {
-            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
-            renderQuote();
+            window.appState.quoteIndex = (window.appState.quoteIndex + 1) % window.appState.quotes.length;
+            window.renderQuotes();
         };
 
         window.prevQuote = function() {
-            currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
-            renderQuote();
+            window.appState.quoteIndex = (window.appState.quoteIndex - 1 + window.appState.quotes.length) % window.appState.quotes.length;
+            window.renderQuotes();
         };
 
-        window.saveNewQuote = async function() {
-            const text = document.getElementById('input-quote-text').value.trim();
-            const author = document.getElementById('input-quote-author').value.trim() || "Soner'den Erva'ya ❤️";
-
+        window.addNewQuote = function() {
+            const input = document.getElementById('new-quote-input');
+            const text = input.value.trim();
             if (!text) {
-                showToast("Lütfen bir sevgi sözü yazın.");
+                window.showToast("⚠️ Lütfen önce bir sevgi sözü yazın.");
                 return;
             }
 
-            try {
-                if (currentUser && db) {
-                    const quotesColRef = collection(db, 'artifacts', appId, 'public', 'data', 'quotes');
-                    await addDoc(quotesColRef, {
-                        text,
-                        author,
-                        createdAt: Date.now()
-                    });
-                } else {
-                    quotes.unshift({ text, author, createdAt: Date.now() });
-                    renderQuote();
+            const newQuote = {
+                id: 'quote_' + Date.now(),
+                text: text,
+                author: "Soner'den Erva'ya ❤️",
+                createdAt: Date.now()
+            };
+
+            window.appState.quotes.unshift(newQuote);
+            window.appState.quoteIndex = 0;
+            window.renderQuotes();
+            input.value = '';
+            window.showToast("✅ Sevgi sözün eklendi ve kaydedildi!");
+
+            if (typeof window.syncQuoteToCloud === 'function') {
+                window.syncQuoteToCloud(newQuote);
+            }
+        };
+
+        // Sürükle Bırak Desteği
+        function setupDragAndDrop() {
+            const zone = document.getElementById('drop-zone');
+            if (!zone) return;
+
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('drag-over');
+            });
+            zone.addEventListener('dragleave', () => {
+                zone.classList.remove('drag-over');
+            });
+            zone.addEventListener('drop', async (e) => {
+                e.preventDefault();
+                zone.classList.remove('drag-over');
+                const files = Array.from(e.dataTransfer.files || []).filter(f => f.type.startsWith('image/'));
+                if (files.length > 0) {
+                    await window.onFilesSelected({ target: { files, value: '' } });
                 }
-                currentQuoteIndex = 0;
-                document.getElementById('input-quote-text').value = '';
-                closeQuoteModal();
-                showToast("Yeni sevgi sözün buluta kaydedildi ❤️");
-            } catch (err) {
-                console.error("Söz kaydetme hatası:", err);
-                showToast("Kaydedilirken hata oluştu.");
-            }
-        };
-
-        /* =========================================================================
-           MODAL KONTROLLERİ
-        ========================================================================= */
-        window.openDateModal = function() {
-            const [d, t] = startDate.split('T');
-            document.getElementById('input-start-date').value = d || '2025-02-14';
-            document.getElementById('input-start-time').value = (t || '00:00').slice(0, 5);
-            const modal = document.getElementById('date-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-
-        window.closeDateModal = function() {
-            const modal = document.getElementById('date-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
-
-        window.saveStartDate = async function() {
-            const d = document.getElementById('input-start-date').value;
-            const t = document.getElementById('input-start-time').value || '00:00';
-            if (!d) {
-                showToast("Lütfen geçerli bir tarih seçin.");
-                return;
-            }
-            const newDateStr = `${d}T${t}`;
-            startDate = newDateStr;
-            updateCounter();
-
-            try {
-                if (currentUser && db) {
-                    const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'relationship_config', 'main');
-                    await setDoc(configDocRef, {
-                        startDate: newDateStr,
-                        couple: "Soner & Erva",
-                        updatedAt: Date.now()
-                    });
-                }
-                closeDateModal();
-                showToast("Başlangıç tarihiniz herkes için güncellendi ❤️");
-            } catch (err) {
-                console.error("Tarih kaydetme hatası:", err);
-                showToast("Tarih güncellendi.");
-                closeDateModal();
-            }
-        };
-
-        window.openPhotoModal = function() {
-            pendingUploadedPhotos = [];
-            document.getElementById('input-photo-files').value = '';
-            document.getElementById('input-photo-url').value = '';
-            document.getElementById('input-photo-caption').value = '';
-            document.getElementById('input-photo-date').value = '';
-            document.getElementById('selected-files-preview').classList.add('hidden');
-            document.getElementById('upload-progress-box').classList.add('hidden');
-
-            const modal = document.getElementById('photo-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-
-        window.closePhotoModal = function() {
-            const modal = document.getElementById('photo-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
-
-        window.openGalleryModal = function() {
-            renderGalleryGrid();
-            const modal = document.getElementById('gallery-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-
-        window.closeGalleryModal = function() {
-            const modal = document.getElementById('gallery-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
-
-        window.openQuoteModal = function() {
-            const modal = document.getElementById('quote-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-
-        window.closeQuoteModal = function() {
-            const modal = document.getElementById('quote-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
-
-        window.openHelpModal = function() {
-            const modal = document.getElementById('help-modal');
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        };
-
-        window.closeHelpModal = function() {
-            const modal = document.getElementById('help-modal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        };
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-message').textContent = msg;
-            toast.classList.remove('hidden');
-            toast.classList.add('flex');
-            setTimeout(() => {
-                toast.classList.add('hidden');
-                toast.classList.remove('flex');
-            }, 3400);
+            });
         }
 
-        function initFloatingHearts() {
+        // Uçuşan Kalpler
+        function createFloatingHearts() {
             const container = document.getElementById('hearts-container');
-            const heartCount = 14;
-            for (let i = 0; i < heartCount; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'floating-heart text-rose-400/40 select-none';
-                heart.innerHTML = '❤';
-                heart.style.left = `${Math.random() * 100}vw`;
-                heart.style.fontSize = `${Math.floor(Math.random() * 16) + 12}px`;
-                heart.style.animationDuration = `${Math.floor(Math.random() * 12) + 14}s`;
-                heart.style.animationDelay = `${Math.random() * 10}s`;
-                container.appendChild(heart);
+            if (!container) return;
+            for (let i = 0; i < 14; i++) {
+                const h = document.createElement('div');
+                h.className = 'floating-heart text-rose-400/40 select-none';
+                h.textContent = '❤';
+                h.style.left = `${Math.random() * 100}vw`;
+                h.style.fontSize = `${Math.floor(Math.random() * 16) + 14}px`;
+                h.style.animationDuration = `${Math.floor(Math.random() * 10) + 12}s`;
+                h.style.animationDelay = `${Math.random() * 8}s`;
+                container.appendChild(h);
             }
         }
 
-        window.onload = async function () {
-            lucide.createIcons();
-            initFloatingHearts();
+        // Sayfa Yüklenir Yüklenmez Anında Başlat
+        window.addEventListener('DOMContentLoaded', () => {
+            if (window.lucide) lucide.createIcons();
+            createFloatingHearts();
+            setupDragAndDrop();
 
-            updateCounter();
-            setInterval(updateCounter, 1000);
+            window.updateLiveCounter();
+            setInterval(window.updateLiveCounter, 1000);
 
-            renderSlide();
-            renderQuote();
-            setInterval(() => window.nextQuote(), 7000);
+            window.renderSlideshow();
+            window.renderQuotes();
 
-            await initFirebaseCloud();
+            // Slayt Otomatik İlerleme Zamanlayıcısı (4 Saniye)
+            setInterval(() => {
+                if (!window.appState.isPlaying) return;
+                window.appState.timerProgress += 2.5;
+                const bar = document.getElementById('slide-timer-bar');
+                if (bar) bar.style.width = `${Math.min(100, window.appState.timerProgress)}%`;
+                if (window.appState.timerProgress >= 100) {
+                    window.appState.timerProgress = 0;
+                    window.nextPhoto();
+                }
+            }, 100);
+
+            // Söz Otomatik Değişimi (7 Saniye)
+            setInterval(() => {
+                window.nextQuote();
+            }, 7000);
+        });
+    </script>
+
+    <!-- =========================================================================
+         2. GERÇEK ZAMANLI FIREBASE BULUT SENKRONİZASYONU (ARKA PLANDA ÇALIŞIR)
+    ========================================================================== -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, deleteDoc, collection, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'soner-erva-default-app';
+        let db = null;
+        let auth = null;
+        let currentUser = null;
+
+        function updateSyncBadge(text, isReady) {
+            const label = document.getElementById('sync-text');
+            const dot = document.getElementById('sync-dot');
+            if (label) label.textContent = text;
+            if (dot) {
+                dot.className = isReady
+                    ? "w-2 h-2 rounded-full bg-emerald-500"
+                    : "w-2 h-2 rounded-full bg-amber-500 animate-pulse";
+            }
+        }
+
+        async function startCloudSync() {
+            try {
+                if (typeof __firebase_config === 'undefined' || !__firebase_config) return;
+                const firebaseConfig = JSON.parse(__firebase_config);
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+
+                // KURAL 3: Önce kimlik doğrulaması
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    currentUser = user;
+                    if (user) {
+                        updateSyncBadge("Bulut Senkronize • Herkeste Kalıcı", true);
+                        listenToCloudData();
+                    }
+                });
+            } catch (err) {
+                console.warn("Bulut senkronizasyonu başlatılamadı, anlık mod devrede:", err);
+            }
+        }
+
+        function listenToCloudData() {
+            if (!currentUser || !db) return;
+
+            // 1. Başlangıç Tarihini Dinle
+            const settingsDoc = doc(db, 'artifacts', appId, 'public', 'data', 'soner_erva_settings', 'main');
+            onSnapshot(settingsDoc, (snap) => {
+                if (snap.exists() && snap.data().startDate) {
+                    window.appState.startDate = snap.data().startDate;
+                    window.updateLiveCounter();
+                }
+            }, (err) => console.warn(err));
+
+            // 2. Ortak Fotoğrafları Dinle
+            const photosCol = collection(db, 'artifacts', appId, 'public', 'data', 'soner_erva_photos');
+            onSnapshot(photosCol, (snap) => {
+                const cloudPhotos = [];
+                snap.forEach((docSnap) => {
+                    const d = docSnap.data();
+                    if (d && d.url) {
+                        cloudPhotos.push({
+                            id: docSnap.id,
+                            url: d.url,
+                            caption: d.caption || "Soner ❤️ Erva",
+                            date: d.date || "",
+                            createdAt: d.createdAt || 0
+                        });
+                    }
+                });
+
+                if (cloudPhotos.length > 0) {
+                    cloudPhotos.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    window.appState.photos = cloudPhotos;
+                    window.renderSlideshow();
+                }
+            }, (err) => console.warn(err));
+
+            // 3. Ortak Sevgi Sözlerini Dinle
+            const quotesCol = collection(db, 'artifacts', appId, 'public', 'data', 'soner_erva_quotes');
+            onSnapshot(quotesCol, (snap) => {
+                const cloudQuotes = [];
+                snap.forEach((docSnap) => {
+                    const d = docSnap.data();
+                    if (d && d.text) {
+                        cloudQuotes.push({
+                            id: docSnap.id,
+                            text: d.text,
+                            author: d.author || "Soner'den Erva'ya ❤️",
+                            createdAt: d.createdAt || 0
+                        });
+                    }
+                });
+
+                if (cloudQuotes.length > 0) {
+                    cloudQuotes.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    window.appState.quotes = [...cloudQuotes];
+                    window.renderQuotes();
+                }
+            }, (err) => console.warn(err));
+        }
+
+        // Buluta Yazma Fonksiyonları
+        window.syncDateToCloud = async function(newDateStr) {
+            if (!currentUser || !db) return;
+            try {
+                const settingsDoc = doc(db, 'artifacts', appId, 'public', 'data', 'soner_erva_settings', 'main');
+                await setDoc(settingsDoc, { startDate: newDateStr, updatedAt: Date.now() });
+            } catch (e) {
+                console.error("Tarih bulut kaydı hatası:", e);
+            }
         };
+
+        window.syncPhotoToCloud = async function(photoObj) {
+            if (!currentUser || !db) return;
+            try {
+                const photoDoc = doc(db, 'artifacts', appId, 'public', 'data', 'soner_erva_photos', String(photoObj.id));
+                await setDoc(photoDoc, {
+                    url: photoObj.url,
+                    caption: photoObj.caption,
+                    date: photoObj.date,
+                    createdAt: photoObj.createdAt
+                });
+            } catch (e) {
+                console.error("Fotoğraf bulut kaydı hatası:", e);
+            }
+        };
+
+        window.deletePhotoFromCloud = async function(photoId) {
+            if (!currentUser || !db) return;
+            try {
+                const photoDoc = doc(db, 'artifacts', appId, 'public', 'data', 'soner_erva_photos', String(photoId));
+                await deleteDoc(photoDoc);
+            } catch (e) {
+                console.error("Fotoğraf silme hatası:", e);
+            }
+        };
+
+        window.syncQuoteToCloud = async function(quoteObj) {
+            if (!currentUser || !db) return;
+            try {
+                const quoteDoc = doc(db, 'artifacts', appId, 'public', 'data', 'soner_erva_quotes', String(quoteObj.id));
+                await setDoc(quoteDoc, {
+                    text: quoteObj.text,
+                    author: quoteObj.author,
+                    createdAt: quoteObj.createdAt
+                });
+            } catch (e) {
+                console.error("Söz bulut kaydı hatası:", e);
+            }
+        };
+
+        startCloudSync();
     </script>
 </body>
 </html>
