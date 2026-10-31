@@ -1,0 +1,1066 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soner & Erva — Bizim Hikayemiz</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        rose: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                            950: '#4c0519',
+                        },
+                        cream: '#FDF8F5'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #FDF8F5;
+            background-image: 
+                radial-gradient(at 15% 15%, rgba(254, 205, 211, 0.45) 0px, transparent 50%),
+                radial-gradient(at 85% 80%, rgba(253, 164, 175, 0.35) 0px, transparent 50%),
+                radial-gradient(at 50% 50%, rgba(255, 228, 230, 0.3) 0px, transparent 60%);
+            background-attachment: fixed;
+            overflow-x: hidden;
+        }
+
+        /* Arka Plan Uçuşan Kalpler */
+        .floating-heart {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) scale(0.6) rotate(0deg);
+                opacity: 0;
+            }
+            15% {
+                opacity: 0.45;
+            }
+            85% {
+                opacity: 0.45;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.1) rotate(25deg);
+                opacity: 0;
+            }
+        }
+
+        /* Cam Efekti (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(254, 205, 211, 0.6);
+            box-shadow: 0 20px 40px -15px rgba(136, 19, 55, 0.07);
+        }
+
+        /* Polaroid Çerçeve Efekti */
+        .polaroid-frame {
+            background: #ffffff;
+            padding: 1rem 1rem 2.25rem 1rem;
+            box-shadow: 0 25px 50px -12px rgba(136, 19, 55, 0.14), 0 0 1px 1px rgba(136, 19, 55, 0.04);
+            transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+        
+        .polaroid-frame:hover {
+            transform: translateY(-4px) rotate(0.5deg);
+        }
+
+        /* Yumuşak Geçişler */
+        .fade-transition {
+            transition: opacity 0.6s ease-in-out, transform 0.6s ease-in-out;
+        }
+
+        /* Özel Kaydırma Çubuğu */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #fff1f2;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #fda4af;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #f43f5e;
+        }
+    </style>
+</head>
+<body class="font-sans text-rose-950 antialiased selection:bg-rose-200 selection:text-rose-900 min-h-screen flex flex-col justify-between relative">
+
+    <!-- =================================================================
+         GELİŞTİRİCİ / SABİT KODLAMA REHBERİ (SONER İÇİN)
+         Siteni başka bir yerde yayınlarken başlangıç tarihini, fotoğrafları 
+         ve sevgi sözlerini kodun içine kalıcı olarak gömmek istersen 
+         aşağıdaki <script> bölümündeki `VARSAYILAN_VERILER` kısmını 
+         düzenleyebilirsin. Ayrıca sayfa üzerindeki butonlarla eklediğin 
+         tüm fotoğraflar ve tarihler cihaz hafızasına (IndexedDB / LocalStorage) 
+         otomatik olarak kaydedilir.
+    ================================================================== -->
+
+    <!-- Uçuşan Kalpler Konteyneri -->
+    <div id="hearts-container" class="fixed inset-0 pointer-events-none overflow-hidden z-0"></div>
+
+    <!-- Üst Gezinme / Başlık Çubuğu -->
+    <header class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 pt-6 pb-2 flex items-center justify-between">
+        <div class="flex items-center gap-2.5 bg-white/80 backdrop-blur-md px-4 py-2 rounded-full border border-rose-200/80 shadow-sm">
+            <span class="relative flex h-2.5 w-2.5">
+                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
+                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-rose-600"></span>
+            </span>
+            <span class="font-serif font-semibold text-rose-900 tracking-wide text-sm sm:text-base">Soner & Erva</span>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button onclick="openDateModal()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white/80 hover:bg-rose-50 backdrop-blur-md px-3.5 py-2 rounded-full border border-rose-200/80 shadow-sm transition-all active:scale-95">
+                <i data-lucide="calendar-heart" class="w-4 h-4 text-rose-600"></i>
+                <span>Tarihi Düzenle</span>
+            </button>
+            <button onclick="openHelpModal()" title="Nasıl Kullanılır & Yedekleme" class="p-2 text-rose-700 bg-white/80 hover:bg-rose-50 backdrop-blur-md rounded-full border border-rose-200/80 shadow-sm transition-all active:scale-95">
+                <i data-lucide="sparkles" class="w-4 h-4 text-rose-600"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Ana İçerik -->
+    <main class="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-12 sm:space-y-16">
+
+        <!-- 1. BÖLÜM: KAHRAMAN BAŞLIK & CANLI İLİŞKİ SAYACI -->
+        <section class="text-center space-y-8">
+            <div class="space-y-3 max-w-2xl mx-auto">
+                <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-rose-100/80 border border-rose-200 text-rose-700 text-xs font-semibold tracking-wider uppercase">
+                    <i data-lucide="heart" class="w-3.5 h-3.5 fill-rose-500 text-rose-500"></i>
+                    <span>Sonsuzluğa Doğru</span>
+                </div>
+                <h1 class="font-serif text-4xl sm:text-6xl font-bold text-rose-950 tracking-tight leading-tight">
+                    Soner <span class="font-serif italic font-normal text-rose-500">&amp;</span> Erva
+                </h1>
+                <p id="start-date-display" class="text-sm sm:text-base text-rose-700/90 font-medium">
+                    Hikayemizin Başlangıcı: Yükleniyor...
+                </p>
+            </div>
+
+            <!-- Canlı Sayaç Kartı -->
+            <div class="glass-card rounded-3xl p-5 sm:p-8 max-w-4xl mx-auto">
+                <div class="flex items-center justify-between mb-5 px-1">
+                    <div class="flex items-center gap-2 text-rose-800 font-medium text-xs sm:text-sm">
+                        <i data-lucide="clock" class="w-4 h-4 text-rose-500"></i>
+                        <span>Seninle geçen her saniye çok değerli...</span>
+                    </div>
+                    <span id="total-days-badge" class="text-xs font-bold bg-rose-600 text-white px-3 py-1 rounded-full shadow-sm">
+                        Toplam 0 Gün
+                    </span>
+                </div>
+
+                <!-- 6'lı Sayaç Izgarası (Yıl, Ay, Gün, Saat, Dakika, Saniye) -->
+                <div class="grid grid-cols-3 sm:grid-cols-6 gap-3 sm:gap-4">
+                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="cnt-years" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
+                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Yıl</span>
+                    </div>
+                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="cnt-months" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
+                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Ay</span>
+                    </div>
+                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="cnt-days" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">0</span>
+                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Gün</span>
+                    </div>
+                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="cnt-hours" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">00</span>
+                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Saat</span>
+                    </div>
+                    <div class="bg-white/90 border border-rose-100 rounded-2xl p-3.5 sm:p-4 shadow-sm flex flex-col items-center justify-center">
+                        <span id="cnt-minutes" class="font-serif text-2xl sm:text-4xl font-bold text-rose-900 tabular-nums">00</span>
+                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-500 mt-1">Dakika</span>
+                    </div>
+                    <div class="bg-gradient-to-br from-rose-500 to-rose-600 rounded-2xl p-3.5 sm:p-4 shadow-md flex flex-col items-center justify-center text-white">
+                        <span id="cnt-seconds" class="font-serif text-2xl sm:text-4xl font-bold tabular-nums">00</span>
+                        <span class="text-[11px] sm:text-xs font-semibold uppercase tracking-wider text-rose-100 mt-1">Saniye</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. BÖLÜM: DİNAMİK FOTOĞRAF SLAYTI & GALERİSİ (ANILARIMIZ) -->
+        <section class="space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-1.5 text-rose-600 text-xs font-bold uppercase tracking-wider mb-1">
+                        <i data-lucide="camera" class="w-3.5 h-3.5"></i>
+                        <span>En Güzel Karelerimiz</span>
+                    </div>
+                    <h2 class="font-serif text-2xl sm:text-3xl font-bold text-rose-950">Bizim Anılarımız</h2>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-2.5">
+                    <button onclick="toggleSlideshowPlay()" id="play-pause-btn" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white/90 hover:bg-rose-50 px-3.5 py-2.5 rounded-xl border border-rose-200 shadow-sm transition-all">
+                        <i data-lucide="pause" id="play-pause-icon" class="w-4 h-4 text-rose-600"></i>
+                        <span id="play-pause-text">Otomatik Geçiş: Açık</span>
+                    </button>
+                    <button onclick="openPhotoModal()" class="flex items-center gap-2 text-xs sm:text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2.5 rounded-xl shadow-md shadow-rose-500/20 transition-all active:scale-95">
+                        <i data-lucide="image-plus" class="w-4 h-4"></i>
+                        <span>Anı / Fotoğraf Ekle</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ana Polaroid Vitrin Kartı -->
+            <div class="relative max-w-3xl mx-auto">
+                <div class="polaroid-frame rounded-3xl relative overflow-hidden">
+                    <!-- Fotoğraf Alanı -->
+                    <div class="relative aspect-[4/3] sm:aspect-[16/10] w-full rounded-2xl overflow-hidden bg-rose-950/5 flex items-center justify-center group">
+                        <!-- Bulanık Arka Plan Doldurma (Dikey fotoğrafların kenarları boş kalmasın diye) -->
+                        <img id="slide-bg-blur" src="" alt="" class="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-40 transition-all duration-700">
+                        
+                        <!-- Asıl Fotoğraf -->
+                        <img id="slide-image" src="" alt="Soner ve Erva Anısı" class="relative z-10 max-h-full max-w-full object-contain rounded-lg transition-all duration-500 shadow-sm">
+
+                        <!-- Sol / Sağ Gezinme Butonları -->
+                        <button onclick="prevSlide()" aria-label="Önceki Fotoğraf" class="absolute left-3 z-20 p-2.5 rounded-full bg-white/80 hover:bg-white text-rose-900 shadow-md backdrop-blur-sm transition-all opacity-90 sm:opacity-0 group-hover:opacity-100 active:scale-90">
+                            <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                        </button>
+                        <button onclick="nextSlide()" aria-label="Sonraki Fotoğraf" class="absolute right-3 z-20 p-2.5 rounded-full bg-white/80 hover:bg-white text-rose-900 shadow-md backdrop-blur-sm transition-all opacity-90 sm:opacity-0 group-hover:opacity-100 active:scale-90">
+                            <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                        </button>
+
+                        <!-- Mevcut Fotoğrafı Sil Butonu -->
+                        <button onclick="deleteCurrentPhoto()" title="Bu fotoğrafı kaldır" class="absolute top-3 right-3 z-20 p-2 rounded-full bg-black/40 hover:bg-rose-600 text-white backdrop-blur-sm transition-all opacity-80 sm:opacity-0 group-hover:opacity-100">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+
+                        <!-- Slayt İlerleme Çubuğu -->
+                        <div class="absolute bottom-0 left-0 right-0 h-1 bg-rose-200/50 z-20">
+                            <div id="slide-progress" class="h-full bg-rose-500 transition-all duration-100" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Polaroid Alt Yazı Alanı -->
+                    <div class="pt-5 px-2 sm:px-4 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-center sm:text-left">
+                        <div>
+                            <p id="slide-caption" class="font-serif italic text-lg sm:text-xl text-rose-950 font-medium">
+                                Yükleniyor...
+                            </p>
+                            <p id="slide-date" class="text-xs text-rose-500 font-medium mt-0.5"></p>
+                        </div>
+                        <div class="flex items-center justify-center gap-1.5 text-xs font-semibold text-rose-700 bg-rose-50 px-3 py-1.5 rounded-full border border-rose-100 self-center sm:self-auto shrink-0">
+                            <span id="slide-counter">1 / 1</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Küçük Önizleme Noktaları / Küçük Resimler -->
+                <div id="thumbnails-container" class="flex items-center justify-center gap-2 mt-4 flex-wrap px-2"></div>
+            </div>
+        </section>
+
+        <!-- 3. BÖLÜM: DÖNÜŞÜMLÜ SEVGİ SÖZLERİ (ERVA'YA NOTLAR) -->
+        <section class="max-w-3xl mx-auto">
+            <div class="glass-card rounded-3xl p-6 sm:p-10 relative overflow-hidden">
+                <!-- Dekoratif Arka Plan İkonu -->
+                <i data-lucide="quote" class="w-24 h-24 text-rose-200/40 absolute -top-3 -left-3 pointer-events-none"></i>
+
+                <div class="relative z-10 text-center space-y-6">
+                    <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-100/90 text-rose-700 text-xs font-semibold">
+                        <i data-lucide="sparkles" class="w-3.5 h-3.5 text-rose-500"></i>
+                        <span>Kalbimden Sana Notlar</span>
+                    </div>
+
+                    <div class="min-h-[110px] sm:min-h-[90px] flex flex-col items-center justify-center px-2">
+                        <p id="quote-text" class="font-serif italic text-xl sm:text-2xl text-rose-950 leading-relaxed fade-transition">
+                            "Seninle geçen her gün, hayatımın en güzel sayfası..."
+                        </p>
+                        <span id="quote-author" class="text-xs sm:text-sm font-semibold text-rose-600 mt-3 tracking-wide uppercase">
+                            — Soner'den Erva'ya
+                        </span>
+                    </div>
+
+                    <div class="flex flex-wrap items-center justify-center gap-3 pt-2 border-t border-rose-200/60">
+                        <button onclick="prevQuote()" class="p-2 rounded-full bg-white hover:bg-rose-50 text-rose-700 border border-rose-200 shadow-sm transition-all active:scale-95" title="Önceki Söz">
+                            <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                        </button>
+                        <button onclick="nextQuote()" class="flex items-center gap-1.5 text-xs sm:text-sm font-medium text-rose-800 bg-white hover:bg-rose-50 px-4 py-2 rounded-full border border-rose-200 shadow-sm transition-all active:scale-95">
+                            <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-rose-500"></i>
+                            <span>Başka Bir Söz Göster</span>
+                        </button>
+                        <button onclick="openQuoteModal()" class="flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-white bg-rose-600 hover:bg-rose-700 px-4 py-2 rounded-full shadow-sm transition-all active:scale-95">
+                            <i data-lucide="heart-handshake" class="w-4 h-4"></i>
+                            <span>Yeni Söz Ekle</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Alt Bilgi (Footer) -->
+    <footer class="relative z-10 text-center py-8 px-4 text-xs sm:text-sm text-rose-700/80 border-t border-rose-200/40 mt-8">
+        <p class="flex items-center justify-center gap-1.5 font-medium">
+            <span>Soner tarafından Erva için sevgiyle hazırlandı</span>
+            <i data-lucide="heart" class="w-4 h-4 fill-rose-500 text-rose-500 inline animate-pulse"></i>
+        </p>
+    </footer>
+
+    <!-- =================================================================
+         MODALLAR (TARİH DÜZENLEME, FOTOĞRAF EKLEME, SÖZ EKLEME, YARDIM)
+    ================================================================== -->
+
+    <!-- 1. Tarih Düzenleme Modalı -->
+    <div id="date-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-5 animate-fade-in">
+            <div class="flex items-center justify-between">
+                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
+                    <i data-lucide="calendar-heart" class="w-5 h-5 text-rose-600"></i>
+                    <span>Yıldönümü Tarihimiz</span>
+                </h3>
+                <button onclick="closeDateModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <p class="text-xs sm:text-sm text-rose-700/90 leading-relaxed">
+                Erva ile çıktığınız tarihi ve saati seçin. Sayaç bu tarihe göre saniyesi saniyesine hesaplanacaktır.
+            </p>
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Başlangıç Tarihi</label>
+                    <input type="date" id="input-start-date" class="w-full rounded-xl border border-rose-200 px-3.5 py-2.5 text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Saat (İsteğe Bağlı)</label>
+                    <input type="time" id="input-start-time" value="00:00" class="w-full rounded-xl border border-rose-200 px-3.5 py-2.5 text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-2 pt-2">
+                <button onclick="closeDateModal()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-rose-700 hover:bg-rose-50">İptal</button>
+                <button onclick="saveStartDate()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-md">Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. Fotoğraf / Anı Ekleme Modalı -->
+    <div id="photo-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm overflow-y-auto">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-5 my-8">
+            <div class="flex items-center justify-between">
+                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
+                    <i data-lucide="image-plus" class="w-5 h-5 text-rose-600"></i>
+                    <span>Yeni Fotoğraf / Anı Ekle</span>
+                </h3>
+                <button onclick="closePhotoModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Cihazdan Çoklu Fotoğraf Seçme Alanı -->
+            <div class="space-y-4">
+                <label class="flex flex-col items-center justify-center border-2 border-dashed border-rose-300 hover:border-rose-500 bg-rose-50/50 hover:bg-rose-50 rounded-2xl p-6 cursor-pointer transition-all text-center">
+                    <i data-lucide="upload-cloud" class="w-8 h-8 text-rose-500 mb-2"></i>
+                    <span class="text-sm font-semibold text-rose-900">Telefonundan veya Bilgisayarından Fotoğraf Seç</span>
+                    <span class="text-xs text-rose-600 mt-1">Birden fazla fotoğraf seçebilirsin (Otomatik optimize edilir)</span>
+                    <input type="file" id="input-photo-files" accept="image/*" multiple class="hidden" onchange="handleFileSelect(event)">
+                </label>
+
+                <div id="selected-files-preview" class="hidden text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl p-3 flex items-center gap-2">
+                    <i data-lucide="check-circle-2" class="w-4 h-4 shrink-0"></i>
+                    <span id="selected-files-count">0 fotoğraf seçildi</span>
+                </div>
+
+                <div class="relative flex py-1 items-center">
+                    <div class="flex-grow border-t border-rose-200"></div>
+                    <span class="flex-shrink mx-3 text-xs text-rose-400 uppercase font-semibold">veya bağlantı ile</span>
+                    <div class="flex-grow border-t border-rose-200"></div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Fotoğraf Adresi (URL - İsteğe Bağlı)</label>
+                    <input type="url" id="input-photo-url" placeholder="https://ornek.com/fotografimiz.jpg" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Fotoğraf Notu / Başlığı</label>
+                        <input type="text" id="input-photo-caption" placeholder="Örn: İlk kahvemiz ❤️" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Tarih / Konum Etiketi</label>
+                        <input type="text" id="input-photo-date" placeholder="Örn: İstanbul, 2026" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-2 border-t border-rose-100">
+                <button onclick="resetDefaultPhotos()" class="text-xs text-rose-500 hover:text-rose-700 underline">Varsayılanlara Sıfırla</button>
+                <div class="flex items-center gap-2">
+                    <button onclick="closePhotoModal()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-rose-700 hover:bg-rose-50">İptal</button>
+                    <button onclick="saveNewPhotos()" id="save-photo-btn" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-md">Galeriye Ekle</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. Sevgi Sözü Ekleme Modalı -->
+    <div id="quote-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-5">
+            <div class="flex items-center justify-between">
+                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
+                    <i data-lucide="heart-handshake" class="w-5 h-5 text-rose-600"></i>
+                    <span>Erva'ya Yeni Söz Ekle</span>
+                </h3>
+                <button onclick="closeQuoteModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-3">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Sevgi Sözün veya Özel Notun</label>
+                    <textarea id="input-quote-text" rows="3" placeholder="Örn: Gülüşün, en sevdiğim mevsim..." class="w-full rounded-xl border border-rose-200 px-3.5 py-2.5 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-rose-800 mb-1">Alt İmza</label>
+                    <input type="text" id="input-quote-author" value="Soner'den Erva'ya ❤️" class="w-full rounded-xl border border-rose-200 px-3.5 py-2 text-sm text-rose-950 focus:outline-none focus:ring-2 focus:ring-rose-500">
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 pt-2">
+                <button onclick="closeQuoteModal()" class="px-4 py-2.5 rounded-xl text-xs sm:text-sm font-medium text-rose-700 hover:bg-rose-50">İptal</button>
+                <button onclick="saveNewQuote()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 hover:bg-rose-700 text-white shadow-md">Sözü Ekle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. Yardım & Yedekleme Modalı -->
+    <div id="help-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-rose-950/40 backdrop-blur-sm">
+        <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl border border-rose-100 space-y-4">
+            <div class="flex items-center justify-between">
+                <h3 class="font-serif text-xl font-bold text-rose-950 flex items-center gap-2">
+                    <i data-lucide="sparkles" class="w-5 h-5 text-rose-600"></i>
+                    <span>Sitenizi Nasıl Kullanabilirsiniz?</span>
+                </h3>
+                <button onclick="closeHelpModal()" class="p-1.5 text-rose-400 hover:text-rose-700 rounded-full hover:bg-rose-50">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            <div class="text-xs sm:text-sm text-rose-800 space-y-3 leading-relaxed">
+                <p><strong>1. Tarih Ayarı:</strong> Sağ üstteki <em>"Tarihi Düzenle"</em> butonundan Erva ile çıkmaya başladığınız tam günü ve saati seçin.</p>
+                <p><strong>2. Sürekli Değişen Fotoğraflar:</strong> <em>"Anı / Fotoğraf Ekle"</em> butonuna basarak telefonunuzdan veya bilgisayarınızdan istediğiniz kadar fotoğraf yükleyebilirsiniz. Yüklediğiniz fotoğraflar her 4.5 saniyede bir yumuşak geçişle otomatik değişir.</p>
+                <p><strong>3. Kod İçine Sabitleme:</strong> Eğer bu HTML dosyasını kendi klasörünüzde çalıştırıyorsanız, kodun içindeki <code>VARSAYILAN_VERILER</code> listesine kendi fotoğraf dosya isimlerinizi (örn: <code>"foto1.jpg"</code>) yazarak da kalıcı hale getirebilirsiniz.</p>
+            </div>
+            <div class="flex justify-end pt-2">
+                <button onclick="closeHelpModal()" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-rose-600 text-white">Anladım, Teşekkürler</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bildirim Kutusu (Toast) -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 hidden items-center gap-2.5 bg-rose-950 text-white px-4 py-3 rounded-2xl shadow-xl text-xs sm:text-sm font-medium">
+        <i data-lucide="heart" class="w-4 h-4 fill-rose-400 text-rose-400"></i>
+        <span id="toast-message">Kaydedildi!</span>
+    </div>
+
+    <script>
+        /* =========================================================================
+           1. VARSAYILAN VERİLER (SONER BURAYI DİREKT KODDAN DA DÜZENLEYEBİLİR)
+        ========================================================================= */
+        const VARSAYILAN_VERILER = {
+            // Başlangıç tarihi (Yıl-Ay-GünSaat:Dakika)
+            baslangicTarihi: "2024-09-09T00:00",
+
+            // Başlangıçta görünen romantik örnek kartlar (Kendi fotoğraflarını yüklediğinde veya buraya dosya adı yazdığında güncellenir)
+            fotograflar: [
+                {
+                    id: 'default-1',
+                    url: createRomanticSvgDataUrl("Soner & Erva", "Seninle Başlayan En Güzel Hikaye", "#fda4af", "#881337"),
+                    caption: "Seninle başlayan en güzel hikayemiz... İyi ki varsın Erva ❤️",
+                    date: "İlk Günümüz"
+                },
+                {
+                    id: 'default-2',
+                    url: createRomanticSvgDataUrl("Birlikte Güzeliz", "Gülüşün Dünyamı Aydınlatıyor", "#fbcfe8", "#9d174d"),
+                    caption: "Yanında olduğum her an, zaman dursun istiyorum.",
+                    date: "Unutulmaz Anlarımız"
+                },
+                {
+                    id: 'default-3',
+                    url: createRomanticSvgDataUrl("Sonsuza Dek", "Her Günümüz Bir Öncekinden Güzel", "#fecdd3", "#9f1239"),
+                    caption: "Daha birlikte biriktireceğimiz binlerce güzel anımız var...",
+                    date: "Geleceğimiz"
+                }
+            ],
+
+            // Dönüşümlü görünecek sevgi sözleri
+            sevgiSozleri: [
+                {
+                    text: "Seninle geçen her saniye, ömrüme eklenen en güzel hediye. İyi ki hayatımdasın Erva.",
+                    author: "Soner'den Erva'ya ❤️"
+                },
+                {
+                    text: "Gözlerinin içine baktığımda, evimin neresi olduğunu bir kez daha anlıyorum.",
+                    author: "Soner'den Erva'ya"
+                },
+                {
+                    text: "Takvimler ne kadar ilerlerse ilerlesin, sana olan sevgim hep ilk günkü gibi taze ve heyecanlı.",
+                    author: "Seni Çok Seven Soner"
+                },
+                {
+                    text: "Sen benim en güzel tesadüfüm, en doğru kararım ve en tatlı huzurumsun.",
+                    author: "Soner & Erva"
+                },
+                {
+                    text: "Birlikte güldüğümüz, birlikte hayal kurduğumuz nice yıllara sevgilim...",
+                    author: "Sonsuza Dek"
+                }
+            ]
+        };
+
+        // Şık Romantik SVG Görsel Üretici (İnternet kesik olsa bile anında yüklenir)
+        function createRomanticSvgDataUrl(title, subtitle, bgHex, textHex) {
+            const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 750" width="100%" height="100%">
+                <defs>
+                    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#fff1f2"/>
+                        <stop offset="50%" stop-color="${bgHex}"/>
+                        <stop offset="100%" stop-color="#ffe4e6"/>
+                    </linearGradient>
+                </defs>
+                <rect width="1200" height="750" fill="url(#g)"/>
+                <circle cx="250" cy="180" r="220" fill="#ffffff" fill-opacity="0.35"/>
+                <circle cx="980" cy="580" r="260" fill="#ffffff" fill-opacity="0.35"/>
+                <path d="M600 290 C600 265 570 240 540 240 C505 240 480 270 480 305 C480 365 600 430 600 455 C600 430 720 365 720 305 C720 270 695 240 660 240 C630 240 600 265 600 290 Z" fill="${textHex}" fill-opacity="0.15"/>
+                <path d="M600 310 C600 295 582 280 564 280 C543 280 528 298 528 319 C528 355 600 394 600 409 C600 394 672 355 672 319 C672 298 657 280 636 280 C618 280 600 295 600 310 Z" fill="${textHex}" fill-opacity="0.8"/>
+                <text x="600" y="505" font-family="Georgia, serif" font-size="54" font-weight="bold" fill="${textHex}" text-anchor="middle">${title}</text>
+                <text x="600" y="560" font-family="sans-serif" font-size="26" fill="${textHex}" fill-opacity="0.8" text-anchor="middle">${subtitle}</text>
+            </svg>`;
+            return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+        }
+
+        /* =========================================================================
+           2. UYGULAMA DURUMU (STATE) & VERİTABANI (INDEXEDDB + LOCALSTORAGE)
+        ========================================================================= */
+        let startDate = localStorage.getItem('soner_erva_start_date') || VARSAYILAN_VERILER.baslangicTarihi;
+        let photos = [];
+        let quotes = JSON.parse(localStorage.getItem('soner_erva_quotes') || 'null') || VARSAYILAN_VERILER.sevgiSozleri;
+
+        let currentSlideIndex = 0;
+        let isPlaying = true;
+        let slideInterval = null;
+        let progressInterval = null;
+        let slideProgress = 0;
+        const SLIDE_DURATION = 4500; // 4.5 saniyede bir fotoğraf değişir
+
+        let currentQuoteIndex = 0;
+        let pendingUploadedPhotos = [];
+
+        // IndexedDB ile yüksek çözünürlüklü çoklu fotoğrafları tarayıcıda sınırsız saklama
+        const DB_NAME = 'SonerErvaMemoriesDB';
+        const STORE_NAME = 'photos';
+
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, 1);
+                request.onupgradeneeded = (e) => {
+                    const db = e.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'id' });
+                    }
+                };
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        async function loadPhotosFromStorage() {
+            try {
+                const db = await openDB();
+                return new Promise((resolve) => {
+                    const tx = db.transaction(STORE_NAME, 'readonly');
+                    const store = tx.objectStore(STORE_NAME);
+                    const req = store.getAll();
+                    req.onsuccess = () => {
+                        if (req.result && req.result.length > 0) {
+                            resolve(req.result);
+                        } else {
+                            resolve([...VARSAYILAN_VERILER.fotograflar]);
+                        }
+                    };
+                    req.onerror = () => resolve([...VARSAYILAN_VERILER.fotograflar]);
+                });
+            } catch (e) {
+                return [...VARSAYILAN_VERILER.fotograflar];
+            }
+        }
+
+        async function saveAllPhotosToStorage(photoArray) {
+            try {
+                const db = await openDB();
+                const tx = db.transaction(STORE_NAME, 'readwrite');
+                const store = tx.objectStore(STORE_NAME);
+                store.clear();
+                photoArray.forEach(item => store.put(item));
+            } catch (e) {
+                console.warn("Depolama uyarısı:", e);
+            }
+        }
+
+        /* =========================================================================
+           3. CANLI İLİŞKİ SAYACI HESAPLAMA (YIL, AY, GÜN, SAAT, DAKİKA, SANİYE)
+        ========================================================================= */
+        function updateCounter() {
+            const start = new Date(startDate);
+            const now = new Date();
+
+            // Başlangıç tarihi metnini Türkçe formatla
+            const dateFormatter = new Intl.DateTimeFormat('tr-TR', {
+                day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            document.getElementById('start-date-display').textContent = `Başlangıç Tarihimiz: ${dateFormatter.format(start)}`;
+
+            // Eğer ileri bir tarih seçildiyse farkı mutlak değerle veya sıfırla göster
+            let diffMs = now - start;
+            if (diffMs < 0) diffMs = 0;
+
+            const totalDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+            document.getElementById('total-days-badge').textContent = `Toplam ${totalDays.toLocaleString('tr-TR')} Gün`;
+
+            // Tam takvim yılı, ayı ve günü hesaplama
+            let years = now.getFullYear() - start.getFullYear();
+            let months = now.getMonth() - start.getMonth();
+            let days = now.getDate() - start.getDate();
+            let hours = now.getHours() - start.getHours();
+            let minutes = now.getMinutes() - start.getMinutes();
+            let seconds = now.getSeconds() - start.getSeconds();
+
+            if (seconds < 0) {
+                seconds += 60;
+                minutes--;
+            }
+            if (minutes < 0) {
+                minutes += 60;
+                hours--;
+            }
+            if (hours < 0) {
+                hours += 24;
+                days--;
+            }
+            if (days < 0) {
+                const prevMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += prevMonth.getDate();
+                months--;
+            }
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            if (years < 0) {
+                years = 0; months = 0; days = 0; hours = 0; minutes = 0; seconds = 0;
+            }
+
+            document.getElementById('cnt-years').textContent = years;
+            document.getElementById('cnt-months').textContent = months;
+            document.getElementById('cnt-days').textContent = days;
+            document.getElementById('cnt-hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('cnt-minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('cnt-seconds').textContent = String(seconds).padStart(2, '0');
+        }
+
+        /* =========================================================================
+           4. FOTOĞRAF SLAYT GÖSTERİSİ (OTOMATİK DEĞİŞEN GALERİ)
+        ========================================================================= */
+        function renderSlide() {
+            if (!photos.length) return;
+            if (currentSlideIndex >= photos.length) currentSlideIndex = 0;
+            if (currentSlideIndex < 0) currentSlideIndex = photos.length - 1;
+
+            const current = photos[currentSlideIndex];
+            const imgEl = document.getElementById('slide-image');
+            const bgBlurEl = document.getElementById('slide-bg-blur');
+
+            imgEl.style.opacity = '0.2';
+            setTimeout(() => {
+                imgEl.src = current.url;
+                bgBlurEl.src = current.url;
+                document.getElementById('slide-caption').textContent = current.caption || "Seninle güzel bir anımız ❤️";
+                document.getElementById('slide-date').textContent = current.date || "Soner & Erva";
+                document.getElementById('slide-counter').textContent = `${currentSlideIndex + 1} / ${photos.length}`;
+                imgEl.style.opacity = '1';
+            }, 180);
+
+            renderThumbnails();
+            resetSlideProgress();
+        }
+
+        function renderThumbnails() {
+            const container = document.getElementById('thumbnails-container');
+            container.innerHTML = '';
+            photos.forEach((photo, idx) => {
+                const btn = document.createElement('button');
+                const isActive = idx === currentSlideIndex;
+                btn.className = `h-12 w-12 sm:h-14 sm:w-14 rounded-xl overflow-hidden border-2 transition-all ${
+                    isActive ? 'border-rose-600 scale-105 shadow-md ring-2 ring-rose-300' : 'border-white/80 opacity-60 hover:opacity-100'
+                }`;
+                btn.onclick = () => {
+                    currentSlideIndex = idx;
+                    renderSlide();
+                };
+                btn.innerHTML = `<img src="${photo.url}" alt="" class="w-full h-full object-cover">`;
+                container.appendChild(btn);
+            });
+        }
+
+        function nextSlide() {
+            currentSlideIndex = (currentSlideIndex + 1) % photos.length;
+            renderSlide();
+        }
+
+        function prevSlide() {
+            currentSlideIndex = (currentSlideIndex - 1 + photos.length) % photos.length;
+            renderSlide();
+        }
+
+        function resetSlideProgress() {
+            slideProgress = 0;
+            document.getElementById('slide-progress').style.width = '0%';
+            if (progressInterval) clearInterval(progressInterval);
+
+            if (isPlaying) {
+                const step = 100 / (SLIDE_DURATION / 100);
+                progressInterval = setInterval(() => {
+                    slideProgress += step;
+                    if (slideProgress >= 100) {
+                        slideProgress = 0;
+                        nextSlide();
+                    } else {
+                        document.getElementById('slide-progress').style.width = `${slideProgress}%`;
+                    }
+                }, 100);
+            }
+        }
+
+        function toggleSlideshowPlay() {
+            isPlaying = !isPlaying;
+            const textEl = document.getElementById('play-pause-text');
+            const iconEl = document.getElementById('play-pause-icon');
+
+            if (isPlaying) {
+                textEl.textContent = "Otomatik Geçiş: Açık";
+                iconEl.setAttribute('data-lucide', 'pause');
+                resetSlideProgress();
+            } else {
+                textEl.textContent = "Otomatik Geçiş: Duraklatıldı";
+                iconEl.setAttribute('data-lucide', 'play');
+                if (progressInterval) clearInterval(progressInterval);
+            }
+            lucide.createIcons();
+        }
+
+        // Cihazdan seçilen fotoğrafları küçültüp (sıkıştırıp) hızlı yüklenmesini sağlama
+        function handleFileSelect(event) {
+            const files = Array.from(event.target.files);
+            if (!files.length) return;
+
+            pendingUploadedPhotos = [];
+            const previewBox = document.getElementById('selected-files-preview');
+            const countText = document.getElementById('selected-files-count');
+
+            previewBox.classList.remove('hidden');
+            countText.textContent = `${files.length} fotoğraf işleniyor...`;
+
+            let processed = 0;
+            files.forEach((file) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const MAX_WIDTH = 1280;
+                        let width = img.width;
+                        let height = img.height;
+
+                        if (width > MAX_WIDTH) {
+                            height = Math.round((height * MAX_WIDTH) / width);
+                            width = MAX_WIDTH;
+                        }
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+                        pendingUploadedPhotos.push(compressedDataUrl);
+                        processed++;
+
+                        if (processed === files.length) {
+                            countText.textContent = `${files.length} fotoğraf eklenecek şekilde hazır!`;
+                        }
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function saveNewPhotos() {
+            const urlInput = document.getElementById('input-photo-url').value.trim();
+            const captionInput = document.getElementById('input-photo-caption').value.trim() || "Erva ile Güzel Bir Anımız ❤️";
+            const dateInput = document.getElementById('input-photo-date').value.trim() || new Date().toLocaleDateString('tr-TR');
+
+            if (pendingUploadedPhotos.length === 0 && !urlInput) {
+                showToast("Lütfen bir fotoğraf seçin veya bağlantı girin.");
+                return;
+            }
+
+            // Eğer sadece varsayılan SVG'ler varsa ve kullanıcı ilk gerçek fotoğrafını yüklüyorsa, yeni fotoğrafları en başa ekle
+            const newItems = [];
+
+            pendingUploadedPhotos.forEach((dataUrl, i) => {
+                newItems.push({
+                    id: 'photo-' + Date.now() + '-' + i,
+                    url: dataUrl,
+                    caption: captionInput,
+                    date: dateInput
+                });
+            });
+
+            if (urlInput) {
+                newItems.push({
+                    id: 'photo-url-' + Date.now(),
+                    url: urlInput,
+                    caption: captionInput,
+                    date: dateInput
+                });
+            }
+
+            photos = [...newItems, ...photos];
+            currentSlideIndex = 0;
+
+            await saveAllPhotosToStorage(photos);
+            renderSlide();
+            closePhotoModal();
+            showToast(`${newItems.length} yeni anı galeriye eklendi!`);
+        }
+
+        async function deleteCurrentPhoto() {
+            if (photos.length <= 1) {
+                showToast("Galeride en az 1 fotoğraf kalmalıdır.");
+                return;
+            }
+            photos.splice(currentSlideIndex, 1);
+            if (currentSlideIndex >= photos.length) currentSlideIndex = 0;
+            await saveAllPhotosToStorage(photos);
+            renderSlide();
+            showToast("Fotoğraf galeriden kaldırıldı.");
+        }
+
+        async function resetDefaultPhotos() {
+            photos = [...VARSAYILAN_VERILER.fotograflar];
+            currentSlideIndex = 0;
+            await saveAllPhotosToStorage(photos);
+            renderSlide();
+            closePhotoModal();
+            showToast("Varsayılan görseller geri yüklendi.");
+        }
+
+        /* =========================================================================
+           5. DÖNÜŞÜMLÜ SEVGİ SÖZLERİ
+        ========================================================================= */
+        function renderQuote() {
+            if (!quotes.length) return;
+            const quoteTextEl = document.getElementById('quote-text');
+            const quoteAuthorEl = document.getElementById('quote-author');
+
+            quoteTextEl.style.opacity = '0';
+            setTimeout(() => {
+                const q = quotes[currentQuoteIndex];
+                quoteTextEl.textContent = `"${q.text}"`;
+                quoteAuthorEl.textContent = `— ${q.author || "Soner'den Erva'ya"}`;
+                quoteTextEl.style.opacity = '1';
+            }, 250);
+        }
+
+        function nextQuote() {
+            currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            renderQuote();
+        }
+
+        function prevQuote() {
+            currentQuoteIndex = (currentQuoteIndex - 1 + quotes.length) % quotes.length;
+            renderQuote();
+        }
+
+        function saveNewQuote() {
+            const text = document.getElementById('input-quote-text').value.trim();
+            const author = document.getElementById('input-quote-author').value.trim() || "Soner'den Erva'ya ❤️";
+
+            if (!text) {
+                showToast("Lütfen bir sevgi sözü yazın.");
+                return;
+            }
+
+            quotes.unshift({ text, author });
+            localStorage.setItem('soner_erva_quotes', JSON.stringify(quotes));
+            currentQuoteIndex = 0;
+            renderQuote();
+            document.getElementById('input-quote-text').value = '';
+            closeQuoteModal();
+            showToast("Yeni sevgi sözün eklendi!");
+        }
+
+        /* =========================================================================
+           6. MODAL KONTROLLERİ & ARKA PLAN KALP ANİMASYONU
+        ========================================================================= */
+        function openDateModal() {
+            const [d, t] = startDate.split('T');
+            document.getElementById('input-start-date').value = d || '2026-02-14';
+            document.getElementById('input-start-time').value = (t || '00:00').slice(0, 5);
+            const modal = document.getElementById('date-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeDateModal() {
+            const modal = document.getElementById('date-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function saveStartDate() {
+            const d = document.getElementById('input-start-date').value;
+            const t = document.getElementById('input-start-time').value || '00:00';
+            if (!d) {
+                showToast("Lütfen geçerli bir tarih seçin.");
+                return;
+            }
+            startDate = `${d}T${t}`;
+            localStorage.setItem('soner_erva_start_date', startDate);
+            updateCounter();
+            closeDateModal();
+            showToast("Başlangıç tarihiniz güncellendi ❤️");
+        }
+
+        function openPhotoModal() {
+            pendingUploadedPhotos = [];
+            document.getElementById('input-photo-files').value = '';
+            document.getElementById('input-photo-url').value = '';
+            document.getElementById('input-photo-caption').value = '';
+            document.getElementById('input-photo-date').value = '';
+            document.getElementById('selected-files-preview').classList.add('hidden');
+
+            const modal = document.getElementById('photo-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closePhotoModal() {
+            const modal = document.getElementById('photo-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openQuoteModal() {
+            const modal = document.getElementById('quote-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeQuoteModal() {
+            const modal = document.getElementById('quote-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function openHelpModal() {
+            const modal = document.getElementById('help-modal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeHelpModal() {
+            const modal = document.getElementById('help-modal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-message').textContent = msg;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3200);
+        }
+
+        function initFloatingHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartCount = 14;
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'floating-heart text-rose-400/40 select-none';
+                heart.innerHTML = '❤';
+                heart.style.left = `${Math.random() * 100}vw`;
+                heart.style.fontSize = `${Math.floor(Math.random() * 16) + 12}px`;
+                heart.style.animationDuration = `${Math.floor(Math.random() * 12) + 14}s`;
+                heart.style.animationDelay = `${Math.random() * 10}s`;
+                container.appendChild(heart);
+            }
+        }
+
+        /* =========================================================================
+           7. BAŞLATMA (WINDOW ONLOAD)
+        ========================================================================= */
+        window.onload = async function () {
+            lucide.createIcons();
+            initFloatingHearts();
+
+            // Sayacı başlat ve her saniye güncelle
+            updateCounter();
+            setInterval(updateCounter, 1000);
+
+            // Fotoğrafları yükle ve slaytı başlat
+            photos = await loadPhotosFromStorage();
+            renderSlide();
+
+            // Sevgi sözlerini başlat ve her 7 saniyede bir otomatik değiştir
+            renderQuote();
+            setInterval(nextQuote, 7000);
+        };
+    </script>
+</body>
+</html>
