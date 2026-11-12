@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Barış Hair Studio">
+    <meta name="theme-color" content="#18181b">
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+    
+    <title>Barış Hair Studio | Güvenli Ödeme & IBAN</title>
+
+    <script>
+    if (window.top !== window.self) { window.top.location = window.self.location; }
+
+    /* ==========================================================================
+       ✂️ BARIŞ HAIR STUDIO - DİJİTAL IBAN & ÖDEME PANELİ
+       ========================================================================== */
+    const ODEME_AYARLARI = {
+        isletmeAdi: "✂️ BARIŞ HAIR STUDIO",
+        slogan: "Hızlı & Güvenli Ödeme Ekranı",
+        anaRenk: "#d97706",        // Şık Berber / Salon Altın Sarısı
+        koyuRenk: "#18181b",       // VIP Antrasit Siyah
+        
+        // 🏦 WHATSAPP'TAN GELEN GERÇEK BİLGİLER
+         AliciAdi: "Nurşen Özbek",
+         BankaAdi: "Vakıfbank",
+         IbanNo: "TR890001500158007316780023",
+         IbanFormatli: "TR89 0001 5001 5800 7316 7800 23",
+        
+        // İşletme Sahibi WhatsApp (Dekont atılacak numara - Örn: Ümit / Salon Hattı)
+        whatsappNo: "905349324544" 
+    };
+    </script>
+
+    <style>
+        :root {
+            --primary: #d97706;
+            --primary-dark: #18181b;
+            --green: #25D366;
+            --bg: #121214;
+            --card: #1f1f23;
+            --text: #f4f4f5;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            padding: 20px 16px 40px;
+            display: flex;
+            flex-direction: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .wrapper {
+            max-width: 450px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .card-box {
+            background: var(--card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 24px 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            text-align: center;
+        }
+        .logo-badge {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, #d97706, #b45309);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 14px;
+            box-shadow: 0 4px 15px rgba(217, 119, 6, 0.4);
+        }
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        p.slogan {
+            font-size: 13px;
+            color: #a1a1aa;
+            margin-bottom: 24px;
+        }
+        .info-group {
+            background: #27272a;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 14px;
+            text-align: left;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .info-label {
+            font-size: 11px;
+            color: #a1a1aa;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 3px;
+            font-weight: 700;
+        }
+        .info-value {
+            font-size: 15px;
+            color: #fff;
+            font-weight: 700;
+        }
+        .iban-container {
+            background: #18181b;
+            border: 2px dashed #d97706;
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .iban-text {
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: 800;
+            color: #fbbf24;
+            letter-spacing: 1px;
+            word-break: break-all;
+            margin-bottom: 12px;
+        }
+        .copy-btn {
+            background: #d97706;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3);
+            transition: transform 0.1s;
+        }
+        .copy-btn:active { transform: scale(0.97); }
+        .copy-btn.copied { background: #10b981; }
+
+        .divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 20px 0;
+        }
+
+        .upload-section {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+        .upload-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: #e4e4e7;
+            margin-bottom: 8px;
+        }
+        .file-input-wrapper {
+            background: #27272a;
+            border: 1.5px dashed #52525b;
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            color: #a1a1aa;
+        }
+        .file-input-wrapper input { display: none; }
+
+        .wp-send-btn {
+            width: 100%;
+            background: var(--green);
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+        }
+        .wp-send-btn:active { transform: scale(0.97); }
+
+        .footer-note {
+            text-align: center;
+            font-size: 11px;
+            color: #71717a;
+            margin-top: 24px;
+            line-height: 1.4;
+        }
+
+        .toast {
+            visibility: hidden;
+            min-width: 240px;
+            background-color: #10b981;
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 12px;
+            position: fixed;
+            z-index: 300;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(16,185,129,0.4);
+        }
+        .toast.show { visibility: visible; }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="wrapper">
+    <div class="card-box">
+        <div class="logo-badge">✂️</div>
+        <h1 id="title">Barış Hair Studio</h1>
+        <p class="slogan" id="slogan">Hızlı & Güvenli Ödeme Ekranı</p>
+
+        <!-- IBAN BİLGİLERİ -->
+        <div class="info-group">
+            <div class="info-label">Banka</div>
+            <div class="info-value" id="val-banka">Vakıfbank</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Alıcı Adı Soyadı</div>
+            <div class="info-value" id="val- Alici">Nurşen Özbek</div>
+        </div>
+
+        <div class="iban-container">
+            <div class="info-label" style="margin-bottom:6px;">IBAN Numarası</div>
+            <div class="iban-text" id="val-iban">TR89 0001 5001 5800 7316 7800 23</div>
+            <button class="copy-btn" id="copyBtn" onclick="copyIbanToClipboard()">📋 IBAN'ı Kopyala</button>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- DEKONT GÖNDERME KISMI -->
+        <div class="upload-section">
+            <label class="upload-label">📸 Ödeme Sonrası Dekont Yükle (İsteğe Bağlı)</label>
+            <label class="file-input-wrapper" id="fileLabel">
+                <i class="fa-solid fa-camera"></i> Ekran Görüntüsü / Dekont Seç
+                <input type="file" id="receiptFile" accept="image/*" onchange="handleFileSelected(event)">
+            </label>
+        </div>
+
+        <button class="wp-send-btn" onclick="sendToWhatsApp()">
+            📲 WhatsApp ile Dekontu Gönder
+        </button>
+
+        <div class="footer-note">
+            🔒 256-Bit SSL Güvenli Ödeme Altyapısı<br>Barış Hair Studio © 2026
+        </div>
+    </div>
+</div>
+
+<div id="toast" class="toast">✅ IBAN Kopyalandı!</div>
+
+<script>
+    function initData() {
+        document.getElementById("title").textContent = ODEME_AYARLARI.isletmeAdi;
+        document.getElementById("slogan").textContent = ODEME_AYARLARI.slogan;
+        document.getElementById("val-banka").textContent = ODEME_AYARLARI.BankaAdi;
+        document.getElementById("val- Alici").textContent = ODEME_AYARLARI. AliciAdi;
+        document.getElementById("val-iban").textContent = ODEME_AYARLARI.IbanFormatli;
+    }
+
+    function copyIbanToClipboard() {
+        const rawIban = ODEME_AYARLARI.IbanNo;
+        navigator.clipboard.writeText(rawIban).then(() => {
+            const btn = document.getElementById("copyBtn");
+            btn.textContent = "✅ Kopyalandı!";
+            btn.classList.add("copied");
+            showToast("✅ IBAN panoya kopyalandı!");
+            setTimeout(() => {
+                btn.textContent = "📋 IBAN'ı Kopyala";
+                btn.classList.remove("copied");
+            }, 2500);
+        });
+    }
+
+    let selectedFileName = "";
+    function handleFileSelected(event) {
+        const file = event.target.files[0];
+        if (file) {
+            selectedFileName = file.name;
+            document.getElementById("fileLabel").innerHTML = `✅ Dekont Seçildi: <strong>${file.name}</strong>`;
+            document.getElementById("fileLabel").style.borderColor = "#10b981";
+            document.getElementById("fileLabel").style.color = "#34d399";
+        }
+    }
+
+    function sendToWhatsApp() {
+        let msg = `💳 *Barış Hair Studio - Ödeme Bildirimi*\n`;
+        msg += `Merhaba, ödemeyi ${ODEME_AYARLARI.BankaAdi} hesabınıza (${ODEME_AYARLARI.IbanFormatli}) gönderdim.`;
+        if (selectedFileName) {
+            msg += `\n(Dekont dosyası seçildi)`;
+        }
+
+        const phone = ODEME_AYARLARI.whatsappNo.replace(/\D/g, '');
+        const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+        window.open(url, "_blank");
+    }
+
+    function showToast(msg) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast show";
+        setTimeout(() => { t.className = "toast"; }, 2400);
+    }
+
+    window.onload = initData;
+</script>
+</body>
+</html>
